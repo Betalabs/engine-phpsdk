@@ -1,7 +1,7 @@
 # Engine-PhpSDK
 
 <p align="center">
-<img src="https://app.buddy.works/betalabs/engine-phpsdk/pipelines/pipeline/59648/badge.svg?token=7694a41867a494d5be5dd61a675f7e43fc18c053ab9c6091a392ce111cd03de5" alt="Buddy Status"/>
+<img src="https://app.buddy.works/betalabs/engine-phpsdk/pipelines/pipeline/59763/badge.svg?token=7694a41867a494d5be5dd61a675f7e43fc18c053ab9c6091a392ce111cd03de5" alt="Buddy Status"/>
 </p>
 
 This package is a helper to integrate with Engine App. It is possible to dispatch requests and set up listeners to process Engine requests.
