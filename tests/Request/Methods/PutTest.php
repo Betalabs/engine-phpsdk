@@ -2,10 +2,10 @@
 
 namespace Betalabs\Engine\Tests\Request\Methods;
 
-use Betalabs\Engine\Request\Methods\Put;
+use Betalabs\Engine\Requests\Methods\Put;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Betalabs\Engine\Request\Header;
+use Betalabs\Engine\Requests\Header;
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 

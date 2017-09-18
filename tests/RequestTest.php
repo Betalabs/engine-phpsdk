@@ -2,11 +2,11 @@
 
 namespace Betalabs\Engine\Tests;
 
-use Betalabs\Engine\Request\Methods\Delete;
-use Betalabs\Engine\Request\Methods\Get;
-use Betalabs\Engine\Request\Methods\Patch;
-use Betalabs\Engine\Request\Methods\Post;
-use Betalabs\Engine\Request\Methods\Put;
+use Betalabs\Engine\Requests\Methods\Delete;
+use Betalabs\Engine\Requests\Methods\Get;
+use Betalabs\Engine\Requests\Methods\Patch;
+use Betalabs\Engine\Requests\Methods\Post;
+use Betalabs\Engine\Requests\Methods\Put;
 use PHPUnit\Framework\TestCase;
 use Betalabs\Engine\Request;
 

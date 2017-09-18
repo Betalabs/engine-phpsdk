@@ -1,14 +1,14 @@
 <?php
 
-namespace Betalabs\Engine\Request\Methods;
+namespace Betalabs\Engine\Requests\Methods;
 
-class Patch extends Request
+class Post extends Request
 {
 
     public function send($path, $data)
     {
         return $this->processContents(
-            $this->client->patch(
+            $this->client->post(
                 $this->uri($path),
                 $this->buildOptions($data)
             )

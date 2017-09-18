@@ -2,7 +2,7 @@
 
 namespace Betalabs\Engine\Tests\Request;
 
-use Betalabs\Engine\Request\Header;
+use Betalabs\Engine\Requests\Header;
 use PHPUnit\Framework\TestCase;
 use Betalabs\Engine\Auth\Header as AuthHeader;
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace Betalabs\Engine\Request\Methods;
+namespace Betalabs\Engine\Requests\Methods;
 
-class Put extends Request
+class Delete extends Request
 {
 
     public function send($path, $data)
     {
         return $this->processContents(
-            $this->client->put(
+            $this->client->delete(
                 $this->uri($path),
                 $this->buildOptions($data)
             )

@@ -2,8 +2,8 @@
 
 namespace Betalabs\Engine\Tests\Request\Methods;
 
-use Betalabs\Engine\Request\Header;
-use Betalabs\Engine\Request\Methods\Request;
+use Betalabs\Engine\Requests\Header;
+use Betalabs\Engine\Requests\Methods\Request;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 
