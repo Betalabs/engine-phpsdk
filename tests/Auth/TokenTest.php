@@ -2,88 +2,58 @@
 
 namespace Betalabs\Engine\Tests\Auth;
 
+use Betalabs\Engine\Auth\Exceptions\TokenExpiredException;
+use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
 use Betalabs\Engine\Auth\Token;
-use Betalabs\Engine\Request\Methods\Post;
-use Mockery;
+use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 
 class TokenTest extends TestCase
 {
 
-    public function testRequestIsSendWithAppropriateData()
+    public function testExceptionWhenNoTokenIsInformed()
     {
 
-        $clientId = 1;
-        $clientSecret = 'secret-hash';
-        $email = 'betalabs@engine';
-        $password = 'password';
-        $accessToken = 'access-token-hash';
-        $refreshToken = 'refresh-token-hash';
+        $this->expectException(UnauthorizedException::class);
 
-        $post = $this->mockPost(
-            $clientId,
-            $clientSecret,
-            $email,
-            $password,
-            $accessToken,
-            $refreshToken
-        );
+        $token = new Token();
 
-        $token = new Token($post);
+        $token->retrieveToken();
 
-        $token->setClientId($clientId);
-        $token->setClientSecret($clientSecret);
+    }
+
+    public function testNonExpiredTokenReturnsItself()
+    {
+
+        $token = new Token();
+
+        $bearerToken = 'bearer-token-hash';
+        $expiresAt = Carbon::now()->addHour();
+
+        $token->informBearerToken($bearerToken, $expiresAt);
 
         $this->assertEquals(
-            $accessToken,
-            $token->request($email, $password)
-        );
-
-        $this->assertEquals(
-            $accessToken,
-            $token->accessToken()
-        );
-
-        $this->assertEquals(
-            $refreshToken,
-            $token->refreshToken()
+            $bearerToken,
+            $token->retrieveToken()
         );
 
     }
 
-    protected function mockPost(
-        $clientId,
-        $clientSecret,
-        $email,
-        $password,
-        $accessToken,
-        $refreshToken
-    ) {
-        $post = Mockery::mock(Post::class);
-        $post->shouldReceive('mustNotAuthorize')
-            ->once()
-            ->andReturn($post);
-        $post->shouldReceive('send')
-            ->once()
-            ->with(
-                'oauth/token',
-                [
-                    'grant_type' => 'password',
-                    'client_id' => $clientId,
-                    'client_secret' => $clientSecret,
-                    'username' => $email,
-                    'password' => $password,
-                    'scope' => '*'
-                ],
-                false
-            );
-        $post->shouldReceive('getContents')
-            ->times(2)
-            ->andReturn((object)[
-                'access_token' => $accessToken,
-                'refresh_token' => $refreshToken
-            ]);
-        return $post;
+    public function testExpiredTokenThrowsException()
+    {
+
+        $this->expectException(TokenExpiredException::class);
+
+        $token = new Token();
+
+        $expiredBearerToken = 'bearer-token-hash';
+
+        $expiresAt = Carbon::now()->subMinute();
+
+        $token->informBearerToken($expiredBearerToken, $expiresAt);
+
+        $token->retrieveToken();
+
     }
 
 }

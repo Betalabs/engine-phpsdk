@@ -2,88 +2,55 @@
 
 namespace Betalabs\Engine\Auth;
 
-use Betalabs\Engine\Request\Methods\Post;
+use Betalabs\Engine\Auth\Exceptions\TokenExpiredException;
+use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
+use Carbon\Carbon;
 
 class Token
 {
 
-    /** @var \Betalabs\Engine\Request\Methods\Post */
-    protected $postRequest;
-
-    /** @var int */
-    protected $clientId;
-
     /** @var string */
-    protected $clientSecret;
+    protected $bearerToken;
+
+    /** @var \Carbon\Carbon */
+    protected $expiresAt;
 
     /**
-     * @param int $clientId
-     */
-    public function setClientId(int $clientId)
-    {
-        $this->clientId = $clientId;
-    }
-
-    /**
-     * @param string $clientSecret
-     */
-    public function setClientSecret(string $clientSecret)
-    {
-        $this->clientSecret = $clientSecret;
-    }
-
-    /**
-     * Token constructor.
-     * @param \Betalabs\Engine\Request\Methods\Post $postRequest
-     */
-    public function __construct(Post $postRequest)
-    {
-        $this->postRequest = $postRequest;
-    }
-
-    /**
-     * Request access token for given email and password
+     * Inform the bearer token information
      *
-     * @param string $email
-     * @param string $password
-     * @return string
+     * @param string $bearerToken
+     * @param \Carbon\Carbon $expiresAt
+     * @return $this
      */
-    public function request($email, $password)
+    public function informBearerToken($bearerToken, $expiresAt)
     {
-
-        $this->postRequest
-            ->mustNotAuthorize()
-            ->send('oauth/token', [
-                'grant_type' => 'password',
-                'client_id' => $this->clientId,
-                'client_secret' => $this->clientSecret,
-                'username' => $email,
-                'password' => $password,
-                'scope' => '*',
-        ], false);
-
-        return $this->accessToken();
-
+        $this->bearerToken = $bearerToken;
+        $this->expiresAt = $expiresAt;
+        return $this;
     }
 
     /**
-     * Retrieve access token from response
+     * Retrieve Bearer token
      *
      * @return string
+     * @throws \Betalabs\Engine\Auth\Exceptions\TokenExpiredException
+     * @throws \Betalabs\Engine\Auth\Exceptions\UnauthorizedException
      */
-    public function accessToken()
+    public function retrieveToken()
     {
-        return $this->postRequest->getContents()->access_token;
-    }
 
-    /**
-     * Retrieve refresh token from response
-     *
-     * @return string
-     */
-    public function refreshToken()
-    {
-        return $this->postRequest->getContents()->refresh_token;
+        if(is_null($this->bearerToken)) {
+            throw new UnauthorizedException(
+                'Token not informed. Impossible to authenticate'
+            );
+        }
+
+        if(Carbon::now() > $this->expiresAt) {
+            throw new TokenExpiredException();
+        }
+
+        return $this->bearerToken;
+
     }
 
 }

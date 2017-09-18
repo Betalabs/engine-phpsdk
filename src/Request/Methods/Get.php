@@ -5,12 +5,12 @@ namespace Betalabs\Engine\Request\Methods;
 class Get extends Request
 {
 
-    public function send($path, $withApiPrefix = true)
+    public function send($path)
     {
 
         return $this->processContents(
             $this->client->get(
-                $this->uri($path, $withApiPrefix),
+                $this->uri($path),
                 $this->buildOptions()
             )
         );

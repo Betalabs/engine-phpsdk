@@ -53,7 +53,7 @@ $post->send(
 
 ## Authentication
 
-By default all requests are authenticated using already stored token or the user e-mail and password. It is possible to disable it using ```mustNotAuthorize``` method:
+By default all requests are authenticated using stored token. It is possible to disable using ```mustNotAuthorize``` method:
 
 ```
  $get = \Betalabs\Engine\Request::get();
@@ -65,8 +65,10 @@ Of course is possible to enable using the ```mustAuthorize()``` method.
 
 ## URL builder
 
-By default the package always adds the ```api``` prefix to all URLs. In the previous example the URL will be (assuming ```http://engine.local``` is the endpoint): ```http://engine.local/api/path/to/api```. It is possible to remove this behavior adding ```false``` to the last parameter in ```send``` call:
+By default the package always adds the ```api``` prefix to all URLs. In the previous example the URL will be (assuming ```http://engine.local``` is the endpoint): ```http://engine.local/api/path/to/api```.
+
+It is possible to change this behavior adding using ```setEndpointSufix()``` method which accepts a ```string``` or ```null```:
 
 ```
-$get->send('path/to/api', false);
+$get->setEndpointSufix(null)->send('path/to/api'); // http://engine.local/path/to/api
 ```

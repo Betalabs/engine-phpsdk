@@ -5,11 +5,11 @@ namespace Betalabs\Engine\Request\Methods;
 class Post extends Request
 {
 
-    public function send($path, $data, $withApiPrefix = true)
+    public function send($path, $data)
     {
         return $this->processContents(
             $this->client->post(
-                $this->uri($path, $withApiPrefix),
+                $this->uri($path),
                 $this->buildOptions($data)
             )
         );
