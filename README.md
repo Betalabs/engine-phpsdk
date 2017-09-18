@@ -53,7 +53,9 @@ $post->send(
 
 ## Authentication
 
-By default all requests are authenticated using already stored token or the user e-mail and password. It is possible to disable it using ```mustNotAuthorize``` method:
+For security reasons APPs can't have access to user's password.
+
+By default all requests are authenticated using stored token. It is possible to disable it using ```mustNotAuthorize``` method:
 
 ```
  $get = \Betalabs\Engine\Request::get();

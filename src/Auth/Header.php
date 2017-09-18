@@ -3,16 +3,9 @@
 namespace Betalabs\Engine\Auth;
 
 use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
-use Betalabs\Engine\Request\Header as RequestHeader;
-use Betalabs\Engine\Request\Methods\Post;
-use DI\ContainerBuilder;
-use GuzzleHttp\Client;
 
 class Header
 {
-
-    /** @var \Betalabs\Engine\Auth\Token */
-    protected $token;
 
     /** @var bool */
     protected $mustAuthorize = true;
@@ -20,42 +13,12 @@ class Header
     /** @var string */
     protected $bearerToken;
 
-    /** @var string */
-    protected $email;
-
-    /** @var string */
-    protected $password;
-
     /**
      * @param string $bearerToken
      */
     public function setBearerToken(string $bearerToken)
     {
         $this->bearerToken = $bearerToken;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail(string $email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPassword(string $password)
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @param \Betalabs\Engine\Auth\Token $token
-     */
-    public function setToken(\Betalabs\Engine\Auth\Token $token)
-    {
-        $this->token = $token;
     }
 
     /**
@@ -67,32 +30,13 @@ class Header
     public function retrieveToken()
     {
 
-        if(!is_null($this->bearerToken)) {
-            return $this->bearerToken;
-        }
-
-        if(is_null($this->email) || is_null($this->password)) {
+        if(is_null($this->bearerToken)) {
             throw new UnauthorizedException(
                 'Token, e-mail and password not informed. Impossible to authenticate'
             );
         }
 
-        return $this->bearerToken = $this->token()->request(
-            $this->email,
-            $this->password
-        );
-
-    }
-
-    protected function token()
-    {
-
-        if(!is_null($this->token)) {
-            return $this->token;
-        }
-
-        $container = ContainerBuilder::buildDevContainer();
-        return $this->token = $container->get(Token::class);
+        return $this->bearerToken;
 
     }
 
