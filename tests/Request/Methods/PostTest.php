@@ -1,0 +1,75 @@
+<?php
+
+namespace Betalabs\Engine\Tests\Request\Methods;
+
+use Betalabs\Engine\Request\Methods\Post;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
+use Betalabs\Engine\Request\Header;
+use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Client;
+
+class PostTest extends TestCase
+{
+
+    public function testPostMethod()
+    {
+
+        $client = $this->mockClient();
+
+        $header = \Mockery::mock(Header::class);
+        $header->shouldReceive('headers')
+            ->andReturn([
+                'header-key' => 'header-value'
+            ]);
+
+        $post = new Post($client, $header);
+        $post->setEndpoint('http://test.local/');
+
+        $this->assertEquals(
+            (object)[
+                'data' => (object)[
+                    'one' => 'field1',
+                    'two' => 'field2',
+                    'three' => 'field3'
+                ]
+            ],
+            $post->send('path/to/api', [
+                'parameter1' => 'fieldOne',
+                'parameter2' => 'fieldTwo'
+            ])
+        );
+
+    }
+
+    protected function mockClient()
+    {
+        $stream = \Mockery::mock(StreamInterface::class);
+        $stream->shouldReceive('getContents')
+            ->once()
+            ->andReturn(json_encode([
+                'data' => [
+                    'one' => 'field1',
+                    'two' => 'field2',
+                    'three' => 'field3'
+                ]
+            ]));
+
+        $response = \Mockery::mock(ResponseInterface::class);
+        $response->shouldReceive('getBody')
+            ->once()
+            ->andReturn($stream);
+
+        $client = \Mockery::mock(Client::class);
+        $client->shouldReceive('post')
+            ->once()
+            ->with('http://test.local/api/path/to/api', [
+                'json' => ['parameter1' => 'fieldOne', 'parameter2' => 'fieldTwo'],
+                'headers' => ['header-key' => 'header-value']
+            ])
+            ->andReturn($response);
+
+        return $client;
+    }
+
+}
