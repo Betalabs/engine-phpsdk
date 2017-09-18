@@ -2,42 +2,18 @@
 
 namespace Betalabs\Engine\Auth;
 
-use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
-
 class Header
 {
 
     /** @var bool */
     protected $mustAuthorize = true;
 
-    /** @var string */
-    protected $bearerToken;
+    /** @var \Betalabs\Engine\Auth\Token */
+    protected $token;
 
-    /**
-     * @param string $bearerToken
-     */
-    public function setBearerToken(string $bearerToken)
+    public function __construct(Token $token)
     {
-        $this->bearerToken = $bearerToken;
-    }
-
-    /**
-     * Retrieve Bearer token
-     *
-     * @return string
-     * @throws \Betalabs\Engine\Auth\Exceptions\UnauthorizedException
-     */
-    public function retrieveToken()
-    {
-
-        if(is_null($this->bearerToken)) {
-            throw new UnauthorizedException(
-                'Token, e-mail and password not informed. Impossible to authenticate'
-            );
-        }
-
-        return $this->bearerToken;
-
+        $this->token = $token;
     }
 
     /**
@@ -53,7 +29,7 @@ class Header
         }
 
         return [
-            'Authorization' => 'Bearer '. $this->retrieveToken()
+            'Authorization' => 'Bearer '. $this->token->retrieveToken()
         ];
 
     }
