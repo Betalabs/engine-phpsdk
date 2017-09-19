@@ -1,26 +1,38 @@
 <?php
 
-namespace Betalabs\Engine;
+namespace Betalabs\Engine\Events;
 
 use Betalabs\Engine\Configs\RouteProvider;
 use Zend\Diactoros\ServerRequestFactory;
 use Aura\Router\RouterContainer;
 use Betalabs\Engine\Auth\Token;
-use DI\ContainerBuilder;
 use Carbon\Carbon;
 
 class Listener
 {
+
+    /** @var \Aura\Router\RouterContainer */
+    protected $routerContainer;
+
+    /** @var \Betalabs\Engine\Configs\RouteProvider */
+    protected $routeProvider;
 
     /** @var \Betalabs\Engine\Auth\Token */
     protected $token;
 
     /**
      * Listener constructor.
+     * @param \Aura\Router\RouterContainer $routerContainer
+     * @param \Betalabs\Engine\Configs\RouteProvider $routeProvider
      * @param \Betalabs\Engine\Auth\Token $token
      */
-    public function __construct(Token $token)
-    {
+    public function __construct(
+        RouterContainer $routerContainer,
+        RouteProvider $routeProvider,
+        Token $token
+    ) {
+        $this->routerContainer = $routerContainer;
+        $this->routeProvider = $routeProvider;
         $this->token = $token;
     }
 
@@ -30,30 +42,26 @@ class Listener
     public function listen()
     {
 
-        $routerContainer = new RouterContainer();
-
-        $this->mapRoutes($routerContainer);
+        $this->mapRoutes();
 
         $request = $this->buildRequest();
 
         $this->engineHeaders($request);
-        $this->matchRoute($routerContainer, $request);
+
+        return $this->matchRoute($request);
 
     }
 
     /**
      * Map routes using RouteProvider
      *
-     * @param RouterContainer $routerContainer
      */
-    protected function mapRoutes($routerContainer)
+    protected function mapRoutes()
     {
 
-        $container = ContainerBuilder::buildDevContainer();
+        $routerProvider = $this->routeProvider->routeProvider();
 
-        $routerProvider = $container->get(RouteProvider::class)->routeProvider();
-
-        $routerProvider->route($routerContainer->getMap());
+        $routerProvider->route($this->routerContainer->getMap());
 
     }
 
@@ -98,14 +106,13 @@ class Listener
     /**
      * Match the request with declared routes
      *
-     * @param $routerContainer
      * @param $request
      * @return mixed
      */
-    protected function matchRoute($routerContainer, $request)
+    protected function matchRoute($request)
     {
 
-        $matcher = $routerContainer->getMatcher();
+        $matcher = $this->routerContainer->getMatcher();
         $route = $matcher->match($request);
 
         $this->evaluateRoute($route);
