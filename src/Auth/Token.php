@@ -10,10 +10,10 @@ class Token
 {
 
     /** @var string */
-    protected $bearerToken;
+    protected static $bearerToken;
 
     /** @var \Carbon\Carbon */
-    protected $expiresAt;
+    protected static $expiresAt;
 
     /**
      * Inform the bearer token information
@@ -24,8 +24,8 @@ class Token
      */
     public function informBearerToken($bearerToken, $expiresAt)
     {
-        $this->bearerToken = $bearerToken;
-        $this->expiresAt = $expiresAt;
+        self::$bearerToken = $bearerToken;
+        self::$expiresAt = $expiresAt;
         return $this;
     }
 
@@ -39,17 +39,17 @@ class Token
     public function retrieveToken()
     {
 
-        if(is_null($this->bearerToken)) {
+        if(is_null(self::$bearerToken)) {
             throw new UnauthorizedException(
                 'Token not informed. Impossible to authenticate'
             );
         }
 
-        if(Carbon::now() > $this->expiresAt) {
+        if(Carbon::now() > self::$expiresAt) {
             throw new TokenExpiredException();
         }
 
-        return $this->bearerToken;
+        return self::$bearerToken;
 
     }
 
