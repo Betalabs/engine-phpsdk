@@ -1,2 +1,4 @@
 .idea
-vendor
+/vendor
+/engine-sdk.xml
+/Router.php

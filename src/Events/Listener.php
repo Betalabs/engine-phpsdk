@@ -2,51 +2,137 @@
 
 namespace Betalabs\Engine;
 
+use Betalabs\Engine\Configs\RouteProvider;
+use Zend\Diactoros\ServerRequestFactory;
+use Aura\Router\RouterContainer;
 use Betalabs\Engine\Auth\Token;
+use DI\ContainerBuilder;
 use Carbon\Carbon;
 
 class Listener
 {
 
+    /** @var \Betalabs\Engine\Auth\Token */
+    protected $token;
+
+    /**
+     * Listener constructor.
+     * @param \Betalabs\Engine\Auth\Token $token
+     */
+    public function __construct(Token $token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * Listen requests
+     */
     public function listen()
     {
 
-        $this->engineHeaders();
+        $routerContainer = new RouterContainer();
 
+        $this->mapRoutes($routerContainer);
+
+        $request = $this->buildRequest();
+
+        $this->engineHeaders($request);
+        $this->matchRoute($routerContainer, $request);
+
+    }
+
+    /**
+     * Map routes using RouteProvider
+     *
+     * @param RouterContainer $routerContainer
+     */
+    protected function mapRoutes($routerContainer)
+    {
+
+        $container = ContainerBuilder::buildDevContainer();
+
+        $routerProvider = $container->get(RouteProvider::class)->routeProvider();
+
+        $routerProvider->route($routerContainer->getMap());
+
+    }
+
+    /**
+     * Build request based on GLOBALS
+     *
+     * @return \Zend\Diactoros\ServerRequest
+     */
+    protected function buildRequest()
+    {
+        return ServerRequestFactory::fromGlobals(
+            $_SERVER,
+            $_GET,
+            $_POST,
+            $_COOKIE,
+            $_FILES
+        );
     }
 
     /**
      * Search for Engine headers to assign token
+     *
+     * @param \Zend\Diactoros\ServerRequest $request
      */
-    protected function engineHeaders()
+    protected function engineHeaders($request)
     {
 
-        $token = $this->getHeader('HTTP_ENGINE_TOKEN');
-        $expiresAt = $this->getHeader('HTTP_ENGINE_TOKEN_EXPIRES_AT');
+        $token = $request->getHeaderLine('engine-token');
+        $expiresAt = $request->getHeaderLine('engine-token-expires-at');
 
-        if(is_null($token) || is_null($expiresAt)) {
+        if(empty($token) || empty($expiresAt)) {
             return;
         }
 
-        $token = new Token();
-        $token->informBearerToken($token, Carbon::createFromTimestamp($expiresAt));
+        $this->token->informBearerToken(
+            $token,
+            Carbon::createFromTimestamp($expiresAt)
+        );
 
     }
 
     /**
-     * Get the header from server or returns null
+     * Match the request with declared routes
      *
-     * @param $variable
-     * @return null|string
+     * @param $routerContainer
+     * @param $request
+     * @return mixed
      */
-    protected function getHeader($variable)
+    protected function matchRoute($routerContainer, $request)
     {
 
-        if(!isset($_SERVER[$variable])) {
-            return null;
+        $matcher = $routerContainer->getMatcher();
+        $route = $matcher->match($request);
+
+        $this->evaluateRoute($route);
+
+        foreach ($route->attributes as $key => $val) {
+            $request = $request->withAttribute($key, $val);
         }
 
-        return $_SERVER[$variable];
+        $callable = $route->handler;
+        return $callable($request);
+    }
+
+    /**
+     * If route does not exist throw 404 status code
+     *
+     * @param $route
+     */
+    protected function evaluateRoute($route)
+    {
+
+        if($route) {
+            return;
+        }
+
+        header("Status: 404 Not Found");
+        echo 'Not found';
+        exit;
 
     }
 
