@@ -4,7 +4,7 @@ namespace Betalabs\Engine\Tests\Auth;
 
 use Betalabs\Engine\Auth\Header;
 use Betalabs\Engine\Auth\Token;
-use PHPUnit\Framework\TestCase;
+use Betalabs\Engine\Tests\TestCase;
 
 class HeaderTest extends TestCase
 {

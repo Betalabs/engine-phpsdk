@@ -6,7 +6,7 @@ use Betalabs\Engine\Requests\Methods\Post;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Betalabs\Engine\Requests\Header;
-use PHPUnit\Framework\TestCase;
+use Betalabs\Engine\Tests\TestCase;
 use GuzzleHttp\Client;
 
 class PostTest extends TestCase

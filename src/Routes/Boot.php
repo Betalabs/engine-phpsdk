@@ -1,14 +1,15 @@
 <?php
 
-namespace Betalabs\Engine\Events;
+namespace Betalabs\Engine\Routes;
 
 use Betalabs\Engine\Configs\RouteProvider;
-use Zend\Diactoros\ServerRequestFactory;
 use Aura\Router\RouterContainer;
 use Betalabs\Engine\Auth\Token;
 use Carbon\Carbon;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zend\Diactoros\ServerRequest;
 
-class Listener
+class Boot
 {
 
     /** @var \Aura\Router\RouterContainer */
@@ -37,14 +38,15 @@ class Listener
     }
 
     /**
-     * Listen requests
+     * Start request
+     *
+     * @param \Zend\Diactoros\ServerRequest $request
+     * @return mixed
      */
-    public function listen()
+    public function start(ServerRequest $request)
     {
 
         $this->mapRoutes();
-
-        $request = $this->buildRequest();
 
         $this->engineHeaders($request);
 
@@ -63,22 +65,6 @@ class Listener
 
         $routerProvider->route($this->routerContainer->getMap());
 
-    }
-
-    /**
-     * Build request based on GLOBALS
-     *
-     * @return \Zend\Diactoros\ServerRequest
-     */
-    protected function buildRequest()
-    {
-        return ServerRequestFactory::fromGlobals(
-            $_SERVER,
-            $_GET,
-            $_POST,
-            $_COOKIE,
-            $_FILES
-        );
     }
 
     /**
@@ -137,9 +123,7 @@ class Listener
             return;
         }
 
-        header("Status: 404 Not Found");
-        echo 'Not found';
-        exit;
+        throw new NotFoundHttpException();
 
     }
 

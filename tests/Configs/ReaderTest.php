@@ -5,7 +5,7 @@ namespace Betalabs\Engine\Tests\Configs;
 use Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException;
 use Betalabs\Engine\Configs\Reader;
 use Betalabs\Engine\Configs\XmlReader;
-use PHPUnit\Framework\TestCase;
+use Betalabs\Engine\Tests\TestCase;
 
 class ReaderTest extends TestCase
 {
@@ -43,6 +43,7 @@ class ReaderTest extends TestCase
 
         $reader = new Reader($xmlReader);
 
+        $reader->clearConfigs();
         $reader->setRootPath('/path/to/root/');
 
         $reader->load();

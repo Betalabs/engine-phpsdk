@@ -8,7 +8,7 @@ use Betalabs\Engine\Requests\Methods\Patch;
 use Betalabs\Engine\Requests\Methods\Post;
 use Betalabs\Engine\Requests\Methods\Put;
 use Betalabs\Engine\Requests\Request;
-use PHPUnit\Framework\TestCase;
+use Betalabs\Engine\Tests\TestCase;
 
 class RequestTest extends TestCase
 {

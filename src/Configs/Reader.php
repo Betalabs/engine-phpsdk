@@ -39,8 +39,8 @@ class Reader
     public function __construct(XmlReader $xmlReader)
     {
         $this->xmlReader = $xmlReader;
-        self::$configObject = null;
-        $this->rootPath = __DIR__ .'/../../../../';
+        $this->rootPath = __DIR__ .'/../../';
+//        $this->rootPath = __DIR__ .'/../../../../';
     }
 
     /**
@@ -64,6 +64,16 @@ class Reader
 
         return self::$configObject;
 
+    }
+
+    /**
+     * Clear all configs
+     *
+     * Can be used to make a new load with fresh data
+     */
+    public function clearConfigs()
+    {
+        self::$configObject = null;
     }
 
 }

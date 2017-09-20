@@ -5,7 +5,7 @@ namespace Betalabs\Engine\Tests\Request\Methods;
 use Betalabs\Engine\Requests\Header;
 use Betalabs\Engine\Requests\Methods\Request;
 use GuzzleHttp\Client;
-use PHPUnit\Framework\TestCase;
+use Betalabs\Engine\Tests\TestCase;
 
 class RequestTest extends TestCase
 {

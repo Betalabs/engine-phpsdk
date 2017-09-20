@@ -9,8 +9,8 @@ use Betalabs\Engine\Configs\Helper;
 use Betalabs\Engine\Configs\Reader;
 use Betalabs\Engine\Configs\RouteProvider;
 use Betalabs\Engine\Router;
+use Betalabs\Engine\Tests\TestCase;
 use DI\Container;
-use PHPUnit\Framework\TestCase;
 
 class RouteProviderTest extends TestCase
 {
@@ -117,7 +117,6 @@ class RouteProviderTest extends TestCase
             ]);
 
         $reader->shouldReceive('getRootPath')
-            ->times(0)
             ->andReturn('/path/to/root');
 
         $helper = \Mockery::mock(Helper::class);

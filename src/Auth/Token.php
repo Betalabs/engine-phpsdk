@@ -53,4 +53,13 @@ class Token
 
     }
 
+    /**
+     * Clear tokens from memory
+     */
+    public function clearToken()
+    {
+        self::$bearerToken = null;
+        self::$expiresAt = null;
+    }
+
 }
