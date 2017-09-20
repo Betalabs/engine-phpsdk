@@ -2,8 +2,6 @@
 
 namespace Betalabs\Engine;
 
-use Aura\Router\Map;
-
 interface Router
 {
 
@@ -13,6 +11,6 @@ interface Router
      * @param \Aura\Router\Map $map
      * @return void
      */
-    public function route(Map $map);
+    public function route(\Aura\Router\Map $map);
 
 }

@@ -51,6 +51,38 @@ $post->send(
 );
 ```
 
+## Configuration file
+
+Configuration file is expected to be stored in the main (root) directory of the project and shall be named ```engine-sdk.xml```.
+
+This is its basic format:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<engine-sdk>
+    <routeProvider>
+        <path></path>
+        <class></class>
+    </routeProvider>
+</engine-sdk>
+```
+
+Each section of this document will relate to its configuration.
+
+## Routes
+
+All routes must be declared in one single file which implements ```Betalabs\Engine\Router``` interface. The ```route``` method receives a ```Aura\Router\Map``` parameter, its usage can be checked <a href="https://github.com/auraphp/Aura.Router/blob/3.x/docs/defining-routes.md" target="_blank">here</a>.
+
+The location of route file is declared in configuration file:
+
+```
+<routeProvider>
+    <path></path>
+    <class></class>
+</routeProvider>
+```
+
+Where ```path``` is the relative path to the file (based on the root directory) and ```class``` is the class name (with namespace if exists). The ```path``` is not required when the class is autoloaded.
+
 ## Authentication
 
 By default all requests are authenticated using stored token. It is possible to disable using ```mustNotAuthorize``` method:
@@ -62,6 +94,10 @@ By default all requests are authenticated using stored token. It is possible to 
   ->send('path/to/api');
 ```
 Of course is possible to enable using the ```mustAuthorize()``` method.
+
+All requests dispatched by Engine owns two headers: ```Engine-Token``` and ```Engine-Token-Expires-At```. Both data are automatically stored by Routes and used in all requests to Engine.
+
+If the token is expired an ```Betalabs\Engine\Auth\Exceptions\TokenExpiredException``` is thrown.
 
 ## URL builder
 
