@@ -2,7 +2,7 @@
 
 namespace Betalabs\Engine;
 
-use Betalabs\Engine\Request\Request as RealRequest;
+use Betalabs\Engine\Requests\Request as RealRequest;
 
 class Request
 {

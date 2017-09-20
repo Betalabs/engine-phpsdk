@@ -2,11 +2,11 @@
 
 namespace Betalabs\Engine\Tests\Request\Methods;
 
-use Betalabs\Engine\Request\Methods\Delete;
+use Betalabs\Engine\Requests\Methods\Delete;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Betalabs\Engine\Request\Header;
-use PHPUnit\Framework\TestCase;
+use Betalabs\Engine\Requests\Header;
+use Betalabs\Engine\Tests\TestCase;
 use GuzzleHttp\Client;
 
 class DeleteTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace Betalabs\Engine\Request\Methods;
+namespace Betalabs\Engine\Requests\Methods;
 
 class Get extends Request
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Betalabs\Engine\Request;
+namespace Betalabs\Engine\Requests;
 
 use Betalabs\Engine\Auth\Header as AuthHeader;
 

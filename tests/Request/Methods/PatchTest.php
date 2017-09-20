@@ -2,11 +2,11 @@
 
 namespace Betalabs\Engine\Tests\Request\Methods;
 
-use Betalabs\Engine\Request\Methods\Patch;
+use Betalabs\Engine\Requests\Methods\Patch;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Betalabs\Engine\Request\Header;
-use PHPUnit\Framework\TestCase;
+use Betalabs\Engine\Requests\Header;
+use Betalabs\Engine\Tests\TestCase;
 use GuzzleHttp\Client;
 
 class PatchTest extends TestCase

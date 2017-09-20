@@ -6,7 +6,7 @@ use Betalabs\Engine\Auth\Exceptions\TokenExpiredException;
 use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
 use Betalabs\Engine\Auth\Token;
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
+use Betalabs\Engine\Tests\TestCase;
 
 class TokenTest extends TestCase
 {

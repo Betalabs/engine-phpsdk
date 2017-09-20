@@ -1,12 +1,12 @@
 <?php
 
-namespace Betalabs\Engine\Request;
+namespace Betalabs\Engine\Requests;
 
-use Betalabs\Engine\Request\Methods\Delete;
-use Betalabs\Engine\Request\Methods\Get;
-use Betalabs\Engine\Request\Methods\Patch;
-use Betalabs\Engine\Request\Methods\Post;
-use Betalabs\Engine\Request\Methods\Put;
+use Betalabs\Engine\Requests\Methods\Delete;
+use Betalabs\Engine\Requests\Methods\Get;
+use Betalabs\Engine\Requests\Methods\Patch;
+use Betalabs\Engine\Requests\Methods\Post;
+use Betalabs\Engine\Requests\Methods\Put;
 use DI\ContainerBuilder;
 
 class Request
@@ -26,7 +26,7 @@ class Request
     /**
      * Build a GET request
      *
-     * @return \Betalabs\Engine\Request\Methods\Get
+     * @return \Betalabs\Engine\Requests\Methods\Get
      */
     public function get()
     {
@@ -36,7 +36,7 @@ class Request
     /**
      * Build a POST request
      *
-     * @return \Betalabs\Engine\Request\Methods\Post
+     * @return \Betalabs\Engine\Requests\Methods\Post
      */
     public function post()
     {
@@ -46,7 +46,7 @@ class Request
     /**
      * Build a PUT request
      *
-     * @return \Betalabs\Engine\Request\Methods\Put
+     * @return \Betalabs\Engine\Requests\Methods\Put
      */
     public function put()
     {
@@ -56,7 +56,7 @@ class Request
     /**
      * Build a PATCH request
      *
-     * @return \Betalabs\Engine\Request\Methods\Patch
+     * @return \Betalabs\Engine\Requests\Methods\Patch
      */
     public function patch()
     {
@@ -66,7 +66,7 @@ class Request
     /**
      * Build a DELETE request
      *
-     * @return \Betalabs\Engine\Request\Methods\Delete
+     * @return \Betalabs\Engine\Requests\Methods\Delete
      */
     public function delete()
     {

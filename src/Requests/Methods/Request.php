@@ -1,8 +1,8 @@
 <?php
 
-namespace Betalabs\Engine\Request\Methods;
+namespace Betalabs\Engine\Requests\Methods;
 
-use Betalabs\Engine\Request\Header;
+use Betalabs\Engine\Requests\Header;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
@@ -18,7 +18,7 @@ abstract class Request
     /** @var mixed */
     protected $contents;
 
-    /** @var \Betalabs\Engine\Request\Header */
+    /** @var \Betalabs\Engine\Requests\Header */
     protected $header;
 
     /** @var string */
@@ -64,7 +64,7 @@ abstract class Request
     /**
      * Request constructor.
      * @param \GuzzleHttp\Client $client
-     * @param \Betalabs\Engine\Request\Header $header
+     * @param \Betalabs\Engine\Requests\Header $header
      */
     public function __construct(Client $client, Header $header)
     {
