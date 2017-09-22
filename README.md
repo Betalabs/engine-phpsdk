@@ -4,7 +4,7 @@
 <img src="https://app.buddy.works/betalabs/engine-phpsdk/pipelines/pipeline/59763/badge.svg?token=7694a41867a494d5be5dd61a675f7e43fc18c053ab9c6091a392ce111cd03de5" alt="Buddy Status"/>
 </p>
 
-This package is a helper to integrate with Engine App. It is possible to dispatch requests and set up listeners to process Engine requests.
+This package is a helper to integrate with Engine. It is possible to dispatch requests and set up listeners to process Engine requests.
 
 ## Request
 
@@ -83,6 +83,18 @@ The location of route file is declared in configuration file:
 
 Where ```path``` is the relative path to the file (based on the root directory) and ```class``` is the class name (with namespace if exists). The ```path``` is not required when the class is autoloaded.
 
+### Engine requests
+
+All requests to the App are dispatched by the Engine, these requests might be originated by an trigger or an authenticated user. However, for some applications, it might be useful to own some endpoints for loose requests (that are not directly dispatched by Engine).
+
+Assume we are building an app that creates a tag for an order named <i>TagCreator</i>; there are two main starters:
+(1) An Engine user is managing the orders and click in "Make tag";
+(2) An external system wants to generate a tag.
+
+In the first case Engine owns a trigger to dispatch an request to the app. In this request Engine will add some information to identify which order the user wants to generate the tag (such as the ID) and via Engine requests is possible to gather all information to response the request with the tag. The second case the app must own a route prepared to receive all information via request parameter and then generate the tag.
+
+Note in the second case Engine does not take any action and is not used to generate any data. To make a request directly to the app dispatch to: ```http://{app-company}-{app-repository}.engine.url/``` where ```{app-company}``` and ```{app-repository}``` are GitHub's Company and Repository name (used to register app in Engine).
+
 ## Authentication
 
 By default all requests are authenticated using stored token. It is possible to disable using ```mustNotAuthorize``` method:
@@ -101,10 +113,10 @@ If the token is expired an ```Betalabs\Engine\Auth\Exceptions\TokenExpiredExcept
 
 ## URL builder
 
-By default the package always adds the ```api``` prefix to all URLs. In the previous example the URL will be (assuming ```http://engine.local``` is the endpoint): ```http://engine.local/api/path/to/api```.
+By default the package always adds the ```api``` prefix to all URLs. In the previous example the URL will be (assuming ```http://engine.url``` is the endpoint): ```http://engine.url/api/path/to/api```.
 
 It is possible to change this behavior adding using ```setEndpointSufix()``` method which accepts a ```string``` or ```null```:
 
 ```
-$get->setEndpointSufix(null)->send('path/to/api'); // http://engine.local/path/to/api
+$get->setEndpointSufix(null)->send('path/to/api'); // http://engine.url/path/to/api
 ```
