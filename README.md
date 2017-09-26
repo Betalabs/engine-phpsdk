@@ -59,6 +59,10 @@ This is its basic format:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <engine-sdk>
+    <client>
+        <id></id>
+        <secret></secret>
+    </client>
     <routeProvider>
         <path></path>
         <class></class>
@@ -105,18 +109,30 @@ By default all requests are authenticated using stored token. It is possible to 
   ->mustNotAuthorize()
   ->send('path/to/api');
 ```
+
 Of course is possible to enable using the ```mustAuthorize()``` method.
 
-All requests dispatched by Engine owns two headers: ```Engine-Token``` and ```Engine-Token-Expires-At```. Both data are automatically stored by Routes and used in all requests to Engine.
+All requests dispatched by Engine owns three headers: ```Engine-Access-Token```, ```Engine-Refresh-Token``` and ```Engine-Token-Expires-At```. All data are automatically stored by Routes and used in all requests to Engine.
 
-If the token is expired an ```Betalabs\Engine\Auth\Exceptions\TokenExpiredException``` is thrown.
+If the token is expired and refresh token exists then an attempt to refresh the token is made. An ```Betalabs\Engine\Auth\Exceptions\TokenExpiredException``` is thrown otherwise.
+
+In order to be able to refresh token the client ID and secret must be informed in configuration file. These configurations are in ```<client>``` node:
+
+```
+<client>
+    <id></id>
+    <secret></secret>
+</client>
+```
+
+This information are provided by Engine after registering the App.
 
 ## URL builder
 
 By default the package always adds the ```api``` prefix to all URLs. In the previous example the URL will be (assuming ```http://engine.url``` is the endpoint): ```http://engine.url/api/path/to/api```.
 
-It is possible to change this behavior adding using ```setEndpointSufix()``` method which accepts a ```string``` or ```null```:
+It is possible to change this behavior adding using ```setEndpointSuffix()``` method which accepts a ```string``` or ```null```:
 
 ```
-$get->setEndpointSufix(null)->send('path/to/api'); // http://engine.url/path/to/api
+$get->setEndpointSuffix(null)->send('path/to/api'); // http://engine.url/path/to/api
 ```

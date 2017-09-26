@@ -50,7 +50,7 @@ class RequestTest extends TestCase
 
     }
 
-    public function testUriWithEndpointSufix()
+    public function testUriWithEndpointSuffix()
     {
 
         $request = $this->getMockBuilder(Request::class)
@@ -66,7 +66,7 @@ class RequestTest extends TestCase
 
     }
 
-    public function testUriWithAnotherEndpointSufix()
+    public function testUriWithAnotherEndpointSuffix()
     {
 
         $request = $this->getMockBuilder(Request::class)
@@ -74,7 +74,7 @@ class RequestTest extends TestCase
             ->getMockForAbstractClass();
 
         $request->setEndpoint('http://engine.local/');
-        $request->setEndpointSufix('not-api');
+        $request->setEndpointSuffix('not-api');
 
         $this->assertEquals(
             'http://engine.local/not-api/path/to/api',
@@ -83,7 +83,7 @@ class RequestTest extends TestCase
 
     }
 
-    public function testUriWithoutEndpointSufix()
+    public function testUriWithoutEndpointSuffix()
     {
 
         $request = $this->getMockBuilder(Request::class)
@@ -91,7 +91,7 @@ class RequestTest extends TestCase
             ->getMockForAbstractClass();
 
         $request->setEndpoint('http://engine.local/');
-        $request->setEndpointSufix(null);
+        $request->setEndpointSuffix(null);
 
         $this->assertEquals(
             'http://engine.local/path/to/api',

@@ -25,7 +25,7 @@ abstract class Request
     protected $endpoint = 'http://engine.local';
 
     /** @var string */
-    protected $endpointSufix = 'api';
+    protected $endpointSuffix = 'api';
 
     /**
      * @param string $endpoint
@@ -36,12 +36,12 @@ abstract class Request
     }
 
     /**
-     * @param string|null $endpointSufix
+     * @param string|null $endpointSuffix
      * @return Request
      */
-    public function setEndpointSufix(string $endpointSufix = null)
+    public function setEndpointSuffix(string $endpointSuffix = null)
     {
-        $this->endpointSufix = $endpointSufix;
+        $this->endpointSuffix = $endpointSuffix;
         return $this;
     }
 
@@ -82,9 +82,9 @@ abstract class Request
     public function uri($path)
     {
 
-        $sufix = empty($this->endpointSufix) ? '' : trim($this->endpointSufix, '/') . '/';
+        $suffix = empty($this->endpointSuffix) ? '' : trim($this->endpointSuffix, '/') . '/';
 
-        return trim($this->endpoint, '/') .'/'. $sufix . $path;
+        return trim($this->endpoint, '/') .'/'. $suffix . $path;
 
     }
 
