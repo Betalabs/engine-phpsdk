@@ -8,17 +8,17 @@ This package is a helper to integrate with Engine. It is possible to dispatch re
 
 ## Request
 
-The ```Betalabs\Engine\Request``` class is responsible for initializing the request specific types objects. If you need to make a GET request call you can:
+The `Betalabs\Engine\Request` class is responsible for initializing the request specific types objects. If you need to make a GET request call you can:
 
-```
+```php
 $get = \Betalabs\Engine\Request::get();
 $response = $get->send('path/to/api'); // ['data' => [...]]
 $statusCode = $get->statusCode(); // 200
 ```
 
-It's also possible to inject the ```Betalabs\Engine\Request```:
+It's also possible to inject the `Betalabs\Engine\Request`:
 
-```
+```php
 class Object {
 
   protected $request;
@@ -39,7 +39,7 @@ class Object {
 ```
 There are five methods possible: GET, POST, PUT, PATCH and DELETE. In all methods the first parameter is the API path. For POST, PUT, PATCH and DELETE the second parameter is the data to be sent to the API, it must be sent in an array. For instance:
 
-```
+```php
 $post = \Betalabs\Engine\Request::post();
 $post->send(
   'path/to/api',
@@ -53,10 +53,10 @@ $post->send(
 
 ## Configuration file
 
-Configuration file is expected to be stored in the main (root) directory of the project and shall be named ```engine-sdk.xml```.
+Configuration file is expected to be stored in the main (root) directory of the project and shall be named `engine-sdk.xml`.
 
 This is its basic format:
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <engine-sdk>
     <client>
@@ -74,18 +74,18 @@ Each section of this document will relate to its configuration.
 
 ## Routes
 
-All routes must be declared in one single file which implements ```Betalabs\Engine\Router``` interface. The ```route``` method receives a ```Aura\Router\Map``` parameter, its usage can be checked <a href="https://github.com/auraphp/Aura.Router/blob/3.x/docs/defining-routes.md" target="_blank">here</a>.
+All routes must be declared in one single file which implements `Betalabs\Engine\Router` interface. The `route` method receives a `Aura\Router\Map` parameter, its usage can be checked <a href="https://github.com/auraphp/Aura.Router/blob/3.x/docs/defining-routes.md" target="_blank">here</a>.
 
 The location of route file is declared in configuration file:
 
-```
+```xml
 <routeProvider>
     <path></path>
     <class></class>
 </routeProvider>
 ```
 
-Where ```path``` is the relative path to the file (based on the root directory) and ```class``` is the class name (with namespace if exists). The ```path``` is not required when the class is autoloaded.
+Where `path` is the relative path to the file (based on the root directory) and `class` is the class name (with namespace if exists). The `path` is not required when the class is autoloaded.
 
 ### Engine requests
 
@@ -97,28 +97,28 @@ Assume we are building an app that creates a tag for an order named <i>TagCreato
 
 In the first case Engine owns a trigger to dispatch an request to the app. In this request Engine will add some information to identify which order the user wants to generate the tag (such as the ID) and via Engine requests is possible to gather all information to response the request with the tag. The second case the app must own a route prepared to receive all information via request parameter and then generate the tag.
 
-Note in the second case Engine does not take any action and is not used to generate any data. To make a request directly to the app dispatch to: ```http://{app-company}-{app-repository}.engine.url/``` where ```{app-company}``` and ```{app-repository}``` are GitHub's Company and Repository name (used to register app in Engine).
+Note in the second case Engine does not take any action and is not used to generate any data. To make a request directly to the app dispatch to: `http://{app-company}-{app-repository}.engine.url/` where `{app-company}` and `{app-repository}` are GitHub's Company and Repository name (used to register app in Engine).
 
 ## Authentication
 
-By default all requests are authenticated using stored token. It is possible to disable using ```mustNotAuthorize``` method:
+By default all requests are authenticated using stored token. It is possible to disable using `mustNotAuthorize` method:
 
-```
+```php
  $get = \Betalabs\Engine\Request::get();
  $response = $get
   ->mustNotAuthorize()
   ->send('path/to/api');
 ```
 
-Of course is possible to enable using the ```mustAuthorize()``` method.
+Of course is possible to enable using the `mustAuthorize()` method.
 
-All requests dispatched by Engine owns three headers: ```Engine-Access-Token```, ```Engine-Refresh-Token``` and ```Engine-Token-Expires-At```. All data are automatically stored by Routes and used in all requests to Engine.
+All requests dispatched by Engine owns three headers: `Engine-Access-Token`, `Engine-Refresh-Token` and `Engine-Token-Expires-At`. All data are automatically stored by Routes and used in all requests to Engine.
 
-If the token is expired and refresh token exists then an attempt to refresh the token is made. An ```Betalabs\Engine\Auth\Exceptions\TokenExpiredException``` is thrown otherwise.
+If the token is expired and refresh token exists then an attempt to refresh the token is made. An `Betalabs\Engine\Auth\Exceptions\TokenExpiredException` is thrown otherwise.
 
-In order to be able to refresh token the client ID and secret must be informed in configuration file. These configurations are in ```<client>``` node:
+In order to be able to refresh token the client ID and secret must be informed in configuration file. These configurations are in `<client>` node:
 
-```
+```xml
 <client>
     <id></id>
     <secret></secret>
@@ -129,10 +129,10 @@ This information are provided by Engine after registering the App.
 
 ## URL builder
 
-By default the package always adds the ```api``` prefix to all URLs. In the previous example the URL will be (assuming ```http://engine.url``` is the endpoint): ```http://engine.url/api/path/to/api```.
+By default the package always adds the `api` prefix to all URLs. In the previous example the URL will be (assuming `http://engine.url` is the endpoint): `http://engine.url/api/path/to/api`.
 
-It is possible to change this behavior adding using ```setEndpointSuffix()``` method which accepts a ```string``` or ```null```:
+It is possible to change this behavior adding using `setEndpointSuffix()` method which accepts a `string` or `null`:
 
-```
+```php
 $get->setEndpointSuffix(null)->send('path/to/api'); // http://engine.url/path/to/api
 ```
