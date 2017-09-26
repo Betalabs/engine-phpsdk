@@ -109,11 +109,23 @@ By default all requests are authenticated using stored token. It is possible to 
   ->mustNotAuthorize()
   ->send('path/to/api');
 ```
+
 Of course is possible to enable using the ```mustAuthorize()``` method.
 
-All requests dispatched by Engine owns two headers: ```Engine-Token``` and ```Engine-Token-Expires-At```. Both data are automatically stored by Routes and used in all requests to Engine.
+All requests dispatched by Engine owns three headers: ```Engine-Access-Token```, ```Engine-Refresh-Token``` and ```Engine-Token-Expires-At```. All data are automatically stored by Routes and used in all requests to Engine.
 
-If the token is expired an ```Betalabs\Engine\Auth\Exceptions\TokenExpiredException``` is thrown.
+If the token is expired and refresh token exists then an attempt to refresh the token is made. An ```Betalabs\Engine\Auth\Exceptions\TokenExpiredException``` is thrown otherwise.
+
+In order to be able to refresh token the client ID and secret must be informed in configuration file. These configurations are in ```<client>``` node:
+
+```
+<client>
+    <id></id>
+    <secret></secret>
+</client>
+```
+
+This information are provided by Engine after registering the App.
 
 ## URL builder
 
