@@ -131,8 +131,8 @@ This information are provided by Engine after registering the App.
 
 By default the package always adds the ```api``` prefix to all URLs. In the previous example the URL will be (assuming ```http://engine.url``` is the endpoint): ```http://engine.url/api/path/to/api```.
 
-It is possible to change this behavior adding using ```setEndpointSufix()``` method which accepts a ```string``` or ```null```:
+It is possible to change this behavior adding using ```setEndpointSuffix()``` method which accepts a ```string``` or ```null```:
 
 ```
-$get->setEndpointSufix(null)->send('path/to/api'); // http://engine.url/path/to/api
+$get->setEndpointSuffix(null)->send('path/to/api'); // http://engine.url/path/to/api
 ```

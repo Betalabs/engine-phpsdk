@@ -95,7 +95,7 @@ class TokenTest extends TestCase
     protected function mockPost()
     {
         $post = \Mockery::mock(Post::class);
-        $post->shouldReceive('setEndpointSufix')
+        $post->shouldReceive('setEndpointSuffix')
             ->with(null)
             ->andReturn($post);
         $post->shouldReceive('send')

@@ -85,7 +85,7 @@ class Token
         /** @var \Betalabs\Engine\Configs\Client $client */
         $client = $container->get(Client::class);
 
-        $response = $post->setEndpointSufix(null)->send(
+        $response = $post->setEndpointSuffix(null)->send(
             'oauth/token',
             [
                 'grant_type' => 'refresh_token',
