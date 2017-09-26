@@ -59,6 +59,10 @@ This is its basic format:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <engine-sdk>
+    <client>
+        <id></id>
+        <secret></secret>
+    </client>
     <routeProvider>
         <path></path>
         <class></class>

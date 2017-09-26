@@ -138,4 +138,28 @@ class Token
         $this->diContainer = $diContainer;
     }
 
+    /**
+     * @return string
+     */
+    public static function getAccessToken()
+    {
+        return self::$accessToken;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getRefreshToken()
+    {
+        return self::$refreshToken;
+    }
+
+    /**
+     * @return \Carbon\Carbon
+     */
+    public static function getExpiresAt()
+    {
+        return self::$expiresAt;
+    }
+
 }
