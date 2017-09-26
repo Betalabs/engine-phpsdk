@@ -28,9 +28,8 @@ class TokenTest extends TestCase
         $token = new Token();
 
         $bearerToken = 'bearer-token-hash';
-        $expiresAt = Carbon::now()->addHour();
 
-        $token->informToken($bearerToken, $expiresAt);
+        $token->informToken($bearerToken, 'refresh-token', Carbon::now()->addHour());
 
         $this->assertEquals(
             $bearerToken,
@@ -39,7 +38,7 @@ class TokenTest extends TestCase
 
     }
 
-    public function testExpiredTokenThrowsException()
+    public function testExpiredTokenWithoutRefreshTokenThrowsException()
     {
 
         $this->expectException(TokenExpiredException::class);
@@ -48,9 +47,7 @@ class TokenTest extends TestCase
 
         $expiredBearerToken = 'bearer-token-hash';
 
-        $expiresAt = Carbon::now()->subMinute();
-
-        $token->informToken($expiredBearerToken, $expiresAt);
+        $token->informToken($expiredBearerToken, null, Carbon::now()->subMinute());
 
         $token->retrieveToken();
 

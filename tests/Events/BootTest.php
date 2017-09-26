@@ -16,7 +16,7 @@ use Zend\Diactoros\ServerRequest;
 class BootTest extends TestCase
 {
 
-    public function testValidRouteWithBothEngineHeaders()
+    public function testValidRouteWithAllEngineHeaders()
     {
 
         $routerContainer = $this->mockRouterContainer();
@@ -42,7 +42,7 @@ class BootTest extends TestCase
         $this->assertEquals(
             'success',
             $boot->start(
-                $this->mockServerRequest('', '')
+                $this->mockServerRequest('', '', '')
             )
         );
 
@@ -59,7 +59,7 @@ class BootTest extends TestCase
         $this->assertEquals(
             'success',
             $boot->start(
-                $this->mockServerRequest('token-hash', '')
+                $this->mockServerRequest('token-hash','', '')
             )
         );
 
@@ -145,22 +145,30 @@ class BootTest extends TestCase
 
         $token = \Mockery::mock(Token::class);
 
-        $token->shouldReceive('informBearerToken')
+        $token->shouldReceive('informToken')
             ->times($times);
 
         return $token;
 
     }
 
-    protected function mockServerRequest($token = 'token-hash', $expiresAt = 9999999)
-    {
+    protected function mockServerRequest(
+        $accessToken = 'token-hash',
+        $refreshToken = 'refresh-hash',
+        $expiresAt = 9999999
+    ) {
 
         $serverRequest = \Mockery::mock(ServerRequest::class);
 
         $serverRequest->shouldReceive('getHeaderLine')
             ->once()
-            ->with('engine-token')
-            ->andReturn($token);
+            ->with('engine-access-token')
+            ->andReturn($accessToken);
+
+        $serverRequest->shouldReceive('getHeaderLine')
+            ->once()
+            ->with('engine-refresh-token')
+            ->andReturn($refreshToken);
 
         $serverRequest->shouldReceive('getHeaderLine')
             ->once()
