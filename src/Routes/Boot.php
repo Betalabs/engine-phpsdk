@@ -75,15 +75,17 @@ class Boot
     protected function engineHeaders($request)
     {
 
-        $token = $request->getHeaderLine('engine-token');
+        $accessToken = $request->getHeaderLine('engine-access-token');
+        $refreshToken = $request->getHeaderLine('engine-refresh-token');
         $expiresAt = $request->getHeaderLine('engine-token-expires-at');
 
-        if(empty($token) || empty($expiresAt)) {
+        if(empty($accessToken) || empty($refreshToken) || empty($expiresAt)) {
             return;
         }
 
-        $this->token->informBearerToken(
-            $token,
+        $this->token->informToken(
+            $accessToken,
+            $refreshToken,
             Carbon::createFromTimestamp($expiresAt)
         );
 

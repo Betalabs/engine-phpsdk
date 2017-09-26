@@ -30,7 +30,7 @@ class TokenTest extends TestCase
         $bearerToken = 'bearer-token-hash';
         $expiresAt = Carbon::now()->addHour();
 
-        $token->informBearerToken($bearerToken, $expiresAt);
+        $token->informToken($bearerToken, $expiresAt);
 
         $this->assertEquals(
             $bearerToken,
@@ -50,7 +50,7 @@ class TokenTest extends TestCase
 
         $expiresAt = Carbon::now()->subMinute();
 
-        $token->informBearerToken($expiredBearerToken, $expiresAt);
+        $token->informToken($expiredBearerToken, $expiresAt);
 
         $token->retrieveToken();
 
