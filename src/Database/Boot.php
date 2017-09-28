@@ -29,20 +29,20 @@ class Boot
     public function run()
     {
 
-//        try {
+        try {
 
             $bootResponse = $this->databaseProvider
                     ->databaseProvider()
                     ->run();
 
-//        } catch(DatabaseProviderNotDefinedException $e) {
-//
-//            $bootResponse = new BootResponse(
-//                true,
-//                'Migration configuration not informed'
-//            );
-//
-//        }
+        } catch(DatabaseProviderNotDefinedException $e) {
+
+            $bootResponse = new BootResponse(
+                true,
+                'Migration configuration not informed'
+            );
+
+        }
 
         return $bootResponse->formatResponse();
 
