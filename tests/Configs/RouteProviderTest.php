@@ -3,12 +3,12 @@
 namespace Betalabs\Engine\Tests\Configs;
 
 use Betalabs\Engine\Configs\Exceptions\RouteClassDoesNotExistException;
-use Betalabs\Engine\Configs\Exceptions\RouteFileDoesNotExistException;
+use Betalabs\Engine\Configs\Exceptions\FileDoesNotExistException;
 use Betalabs\Engine\Configs\Exceptions\RouteProviderNotDefinedException;
 use Betalabs\Engine\Configs\Helper;
 use Betalabs\Engine\Configs\Reader;
-use Betalabs\Engine\Configs\RouteProvider;
-use Betalabs\Engine\Router;
+use Betalabs\Engine\Configs\RouteProvider as RouteProviderConfig;
+use Betalabs\Engine\RouteProvider;
 use Betalabs\Engine\Tests\TestCase;
 use DI\Container;
 
@@ -47,7 +47,7 @@ class RouteProviderTest extends TestCase
             ->with('/path/to/root/path/to/class.php')
             ->andReturn(true);
 
-        $router = \Mockery::mock(Router::class);
+        $router = \Mockery::mock(RouteProvider::class);
 
         $container = \Mockery::mock(Container::class);
         $container->shouldReceive('get')
@@ -55,7 +55,7 @@ class RouteProviderTest extends TestCase
             ->with('ClassName')
             ->andReturn($router);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $this->assertEquals(
             $router,
@@ -85,7 +85,7 @@ class RouteProviderTest extends TestCase
             ->with('ClassName')
             ->andReturn(true);
 
-        $router = \Mockery::mock(Router::class);
+        $router = \Mockery::mock(RouteProvider::class);
 
         $container = \Mockery::mock(Container::class);
         $container->shouldReceive('get')
@@ -93,7 +93,7 @@ class RouteProviderTest extends TestCase
             ->with('ClassName')
             ->andReturn($router);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $this->assertEquals(
             $router,
@@ -105,7 +105,7 @@ class RouteProviderTest extends TestCase
     public function testExistingRouteProviderConfigWithPathUnexisting()
     {
 
-        $this->expectException(RouteFileDoesNotExistException::class);
+        $this->expectException(FileDoesNotExistException::class);
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
@@ -128,7 +128,7 @@ class RouteProviderTest extends TestCase
 
         $container = \Mockery::mock(Container::class);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $routeProvider->routeProvider();
 
@@ -160,7 +160,7 @@ class RouteProviderTest extends TestCase
 
         $container = \Mockery::mock(Container::class);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $routeProvider->routeProvider();
 
@@ -183,7 +183,7 @@ class RouteProviderTest extends TestCase
 
         $container = \Mockery::mock(Container::class);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $routeProvider->routeProvider();
 

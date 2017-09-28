@@ -1,14 +1,15 @@
 <?php
 
-namespace Betalabs\Engine\Tests\Events;
+namespace Betalabs\Engine\Tests\Routes;
 
 use Aura\Router\Map;
 use Aura\Router\Matcher;
-use Betalabs\Engine\Router;
 use Betalabs\Engine\Auth\Token;
+use Betalabs\Engine\RouteProvider;
 use Betalabs\Engine\Routes\Boot;
 use Aura\Router\RouterContainer;
-use Betalabs\Engine\Configs\RouteProvider;
+use Betalabs\Engine\Configs\RouteProvider as RouteProviderConfig;
+use Betalabs\Engine\Routes\Reserved;
 use Betalabs\Engine\Tests\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zend\Diactoros\ServerRequest;
@@ -22,8 +23,9 @@ class BootTest extends TestCase
         $routerContainer = $this->mockRouterContainer();
         $routeProvider = $this->mockRouteProvider();
         $token = $this->mockToken();
+        $reserved = $this->mockReserved();
 
-        $boot = new Boot($routerContainer, $routeProvider, $token);
+        $boot = new Boot($routerContainer, $routeProvider, $reserved, $token);
         $this->assertEquals(
             'success',
             $boot->start($this->mockServerRequest())
@@ -37,8 +39,9 @@ class BootTest extends TestCase
         $routerContainer = $this->mockRouterContainer();
         $routeProvider = $this->mockRouteProvider();
         $token = $this->mockToken(0);
+        $reserved = $this->mockReserved();
 
-        $boot = new Boot($routerContainer, $routeProvider, $token);
+        $boot = new Boot($routerContainer, $routeProvider, $reserved, $token);
         $this->assertEquals(
             'success',
             $boot->start(
@@ -54,8 +57,9 @@ class BootTest extends TestCase
         $routerContainer = $this->mockRouterContainer();
         $routeProvider = $this->mockRouteProvider();
         $token = $this->mockToken(0);
+        $reserved = $this->mockReserved();
 
-        $boot = new Boot($routerContainer, $routeProvider, $token);
+        $boot = new Boot($routerContainer, $routeProvider, $reserved, $token);
         $this->assertEquals(
             'success',
             $boot->start(
@@ -71,8 +75,9 @@ class BootTest extends TestCase
         $routerContainer = $this->mockRouterContainer();
         $routeProvider = $this->mockRouteProvider();
         $token = $this->mockToken(0);
+        $reserved = $this->mockReserved();
 
-        $boot = new Boot($routerContainer, $routeProvider, $token);
+        $boot = new Boot($routerContainer, $routeProvider, $reserved, $token);
         $this->assertEquals(
             'success',
             $boot->start(
@@ -90,8 +95,9 @@ class BootTest extends TestCase
         $routerContainer = $this->mockRouterContainer(false);
         $routeProvider = $this->mockRouteProvider();
         $token = $this->mockToken(0);
+        $reserved = $this->mockReserved();
 
-        $boot = new Boot($routerContainer, $routeProvider, $token);
+        $boot = new Boot($routerContainer, $routeProvider, $reserved, $token);
         $boot->start(
             $this->mockServerRequest('')
         );
@@ -127,11 +133,11 @@ class BootTest extends TestCase
     protected function mockRouteProvider()
     {
 
-        $router = \Mockery::mock(Router::class);
+        $router = \Mockery::mock(RouteProvider::class);
         $router->shouldReceive('route')
             ->once();
 
-        $routeProvider = \Mockery::mock(RouteProvider::class);
+        $routeProvider = \Mockery::mock(RouteProviderConfig::class);
         $routeProvider->shouldReceive('routeProvider')
             ->once()
             ->andReturn($router);
@@ -177,6 +183,14 @@ class BootTest extends TestCase
 
         return $serverRequest;
 
+    }
+
+    protected function mockReserved()
+    {
+        $reserved = \Mockery::mock(Reserved::class);
+        $reserved->shouldReceive('route')
+            ->once();
+        return $reserved;
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace Betalabs\Engine;
 
-interface Router
+interface RouteProvider
 {
 
     /**

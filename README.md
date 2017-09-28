@@ -4,7 +4,7 @@
 <img src="https://app.buddy.works/betalabs/engine-phpsdk/pipelines/pipeline/59763/badge.svg?token=7694a41867a494d5be5dd61a675f7e43fc18c053ab9c6091a392ce111cd03de5" alt="Buddy Status"/>
 </p>
 
-This package is a helper to integrate with Engine. It is possible to dispatch requests and set up listeners to process Engine requests.
+This package is a helper to integrate with Engine. The documentation for integration can be found <a href="https://betalabs.atlassian.net/wiki/spaces/APPS/overview" target="_blank">here</a>.
 
 ## Request
 
@@ -51,6 +51,16 @@ $post->send(
 );
 ```
 
+### URL builder
+
+By default the package always adds the `api` prefix to all URLs. In the previous example the URL will be (assuming `http://engine.url` is the endpoint): `http://engine.url/api/path/to/api`.
+
+It is possible to change this behavior adding using `setEndpointSuffix()` method which accepts a `string` or `null`:
+
+```php
+$get->setEndpointSuffix(null)->send('path/to/api'); // http://engine.url/path/to/api
+```
+
 ## Configuration file
 
 Configuration file is expected to be stored in the main (root) directory of the project and shall be named `engine-sdk.xml`.
@@ -67,6 +77,10 @@ This is its basic format:
         <path></path>
         <class></class>
     </routeProvider>
+    <permissionProvider>
+        <path></path>
+        <class></class>
+    </permissionProvider>
 </engine-sdk>
 ```
 
@@ -74,7 +88,7 @@ Each section of this document will relate to its configuration.
 
 ## Routes
 
-All routes must be declared in one single file which implements `Betalabs\Engine\Router` interface. The `route` method receives a `Aura\Router\Map` parameter, its usage can be checked <a href="https://github.com/auraphp/Aura.Router/blob/3.x/docs/defining-routes.md" target="_blank">here</a>.
+All routes must be declared in one single file which implements `Betalabs\Engine\RouteProvider` interface. The `route` method receives a `Aura\Router\Map` parameter, its usage can be checked <a href="https://github.com/auraphp/Aura.Router/blob/3.x/docs/defining-routes.md" target="_blank">here</a>.
 
 The location of route file is declared in configuration file:
 
@@ -127,12 +141,40 @@ In order to be able to refresh token the client ID and secret must be informed i
 
 This information are provided by Engine after registering the App.
 
-## URL builder
+## Permissions
 
-By default the package always adds the `api` prefix to all URLs. In the previous example the URL will be (assuming `http://engine.url` is the endpoint): `http://engine.url/api/path/to/api`.
-
-It is possible to change this behavior adding using `setEndpointSuffix()` method which accepts a `string` or `null`:
+During the App boot process Engine asks for the permissions. There is an easy way to define them where you must create a class that implements `Betalabs\Engine\PermissionProvider`. This class must own a method that adds all permissions:
 
 ```php
-$get->setEndpointSuffix(null)->send('path/to/api'); // http://engine.url/path/to/api
+public function permissions(\Betalabs\Engine\Permissions\Register $register)
+{
+
+    $register->add(new \Betalabs\Engine\Permissions\Permission(
+        'permission-0-name',
+        'Permission #0 name',
+        'Permission #0 description'
+    ));
+
+    $register->add(new \Betalabs\Engine\Permissions\Permission(
+        'permission-1-name',
+        'Permission #1 name',
+        'Permission #1 description'
+    ));
+
+}
 ```
+
+The location of this file is declared in configuration file:
+
+```xml
+<permissionProvider>
+    <path></path>
+    <class></class>
+</permissionProvider>
+```
+
+Where `path` is the relative path to the file (based on the root directory) and `class` is the class name (with namespace if exists). The `path` is not required when the class is autoloaded.
+
+If this class does not exist or no permission is declared then an 404 HTTP code is returned to Engine when it asks for the permission.
+
+By default the `boot/permission` route is automatically defined and treated by the SDK.

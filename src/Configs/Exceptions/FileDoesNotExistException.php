@@ -2,7 +2,7 @@
 
 namespace Betalabs\Engine\Configs\Exceptions;
 
-class RouteFileDoesNotExistException extends \Exception
+class FileDoesNotExistException extends \Exception
 {
     //
 }

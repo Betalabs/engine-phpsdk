@@ -5,7 +5,7 @@ namespace Betalabs\Engine\Configs;
 use Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException;
 use Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException;
 use Betalabs\Engine\Configs\Exceptions\RouteClassDoesNotExistException;
-use Betalabs\Engine\Configs\Exceptions\RouteFileDoesNotExistException;
+use Betalabs\Engine\Configs\Exceptions\FileDoesNotExistException;
 use Betalabs\Engine\Configs\Exceptions\RouteProviderNotDefinedException;
 use DI\ContainerBuilder;
 use DI\Container;
