@@ -47,15 +47,15 @@ class BootResponse
     /**
      * @return bool
      */
-    public function isSuccess(): bool
+    public function isSuccess()
     {
         return $this->success;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMessage(): string
+    public function getMessage()
     {
         return $this->message;
     }

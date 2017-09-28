@@ -27,7 +27,6 @@ class Boot
      */
     public function run()
     {
-
         return $this->databaseProvider
                 ->databaseProvider()
                 ->run()

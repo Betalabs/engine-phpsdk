@@ -21,7 +21,7 @@ class RouteProviderTest extends TestCase
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->andReturn((object) [
-                'routeProvider' => (object) [
+                'Route' => (object) [
                     'path' => 'path/to/class.php',
                     'class' => 'ClassName'
                 ]
@@ -70,7 +70,7 @@ class RouteProviderTest extends TestCase
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->andReturn((object) [
-                'routeProvider' => (object) [
+                'Route' => (object) [
                     'class' => 'ClassName'
                 ]
             ]);
@@ -110,7 +110,7 @@ class RouteProviderTest extends TestCase
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->andReturn((object) [
-                'routeProvider' => (object) [
+                'Route' => (object) [
                     'path' => 'path/to/class.php',
                     'class' => 'ClassName'
                 ]
@@ -142,7 +142,7 @@ class RouteProviderTest extends TestCase
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->andReturn((object) [
-                'routeProvider' => (object) [
+                'Route' => (object) [
                     'class' => 'ClassName'
                 ]
             ]);
