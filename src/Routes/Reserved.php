@@ -3,7 +3,8 @@
 namespace Betalabs\Engine\Routes;
 
 use Aura\Router\Map;
-use Betalabs\Engine\Permissions\Boot;
+use Betalabs\Engine\Database\Boot as DatabaseBoot;
+use Betalabs\Engine\Permissions\Boot as PermissionBoot;
 use Betalabs\Engine\RouteProvider;
 use DI\Container;
 
@@ -30,22 +31,20 @@ class Reserved implements RouteProvider
      */
     public function route(Map $map)
     {
-        $this->permissionBoot($map);
-    }
-
-    /**
-     * Map permission boot
-     *
-     * @param \Aura\Router\Map $map
-     */
-    protected function permissionBoot(Map $map)
-    {
 
         $map->get(
             'permission-boot',
             '/boot/permission',
             function() {
                 echo $this->responsePermissionBoot();
+            }
+        );
+
+        $map->get(
+            'database-boot',
+            '/boot/database',
+            function() {
+                echo $this->responseDatabaseBoot();
             }
         );
 
@@ -59,9 +58,23 @@ class Reserved implements RouteProvider
     public function responsePermissionBoot()
     {
 
-        $boot = $this->container->get(Boot::class);
+        $boot = $this->container->get(PermissionBoot::class);
 
         return $this->buildEngineDefaultResponse($boot->render());
+
+    }
+
+    /**
+     * Build database boot route response
+     *
+     * @return string
+     */
+    public function responseDatabaseBoot()
+    {
+
+        $boot = $this->container->get(DatabaseBoot::class);
+
+        return $this->buildEngineDefaultResponse($boot->run());
 
     }
 
