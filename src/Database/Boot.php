@@ -3,6 +3,7 @@
 namespace Betalabs\Engine\Database;
 
 use Betalabs\Engine\Configs\DatabaseProvider;
+use Betalabs\Engine\Configs\Exceptions\DatabaseProviderNotDefinedException;
 
 class Boot
 {
@@ -27,10 +28,23 @@ class Boot
      */
     public function run()
     {
-        return $this->databaseProvider
-                ->databaseProvider()
-                ->run()
-                ->formatResponse();
+
+//        try {
+
+            $bootResponse = $this->databaseProvider
+                    ->databaseProvider()
+                    ->run();
+
+//        } catch(DatabaseProviderNotDefinedException $e) {
+//
+//            $bootResponse = new BootResponse(
+//                true,
+//                'Migration configuration not informed'
+//            );
+//
+//        }
+
+        return $bootResponse->formatResponse();
 
     }
 

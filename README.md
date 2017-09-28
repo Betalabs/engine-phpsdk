@@ -81,6 +81,10 @@ This is its basic format:
         <path></path>
         <class></class>
     </permissionProvider>
+    <databaseProvider>
+        <path></path>
+        <class></class>
+    </databaseProvider>
 </engine-sdk>
 ```
 
@@ -178,3 +182,6 @@ Where `path` is the relative path to the file (based on the root directory) and 
 If this class does not exist or no permission is declared then an 404 HTTP code is returned to Engine when it asks for the permission.
 
 By default the `boot/permission` route is automatically defined and treated by the SDK.
+
+## Database migration
+

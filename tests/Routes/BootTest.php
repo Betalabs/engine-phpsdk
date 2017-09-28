@@ -138,7 +138,7 @@ class BootTest extends TestCase
             ->once();
 
         $routeProvider = \Mockery::mock(RouteProviderConfig::class);
-        $routeProvider->shouldReceive('Route')
+        $routeProvider->shouldReceive('routeProvider')
             ->once()
             ->andReturn($router);
 

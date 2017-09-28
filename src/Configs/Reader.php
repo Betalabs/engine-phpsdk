@@ -39,7 +39,7 @@ class Reader
     public function __construct(XmlReader $xmlReader)
     {
         $this->xmlReader = $xmlReader;
-        $this->rootPath = __DIR__ .'/../../';
+        $this->rootPath = __DIR__ .'/../../../../';
     }
 
     /**
