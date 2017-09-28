@@ -18,6 +18,9 @@ class Boot
     /** @var \Betalabs\Engine\Configs\RouteProvider */
     protected $routeProvider;
 
+    /** @var \Betalabs\Engine\Routes\Reserved */
+    protected $reserved;
+
     /** @var \Betalabs\Engine\Auth\Token */
     protected $token;
 
@@ -26,14 +29,17 @@ class Boot
      * @param \Aura\Router\RouterContainer $routerContainer
      * @param \Betalabs\Engine\Configs\RouteProvider $routeProvider
      * @param \Betalabs\Engine\Auth\Token $token
+     * @param \Betalabs\Engine\Routes\Reserved $reserved
      */
     public function __construct(
         RouterContainer $routerContainer,
         RouteProvider $routeProvider,
+        Reserved $reserved,
         Token $token
     ) {
         $this->routerContainer = $routerContainer;
         $this->routeProvider = $routeProvider;
+        $this->reserved = $reserved;
         $this->token = $token;
     }
 
@@ -61,9 +67,14 @@ class Boot
     protected function mapRoutes()
     {
 
-        $routerProvider = $this->routeProvider->routeProvider();
+        $map = $this->routerContainer->getMap();
 
-        $routerProvider->route($this->routerContainer->getMap());
+        // Map App routes
+        $routerProvider = $this->routeProvider->routeProvider();
+        $routerProvider->route($map);
+
+        // Map reserved routes
+        $this->reserved->route($map);
 
     }
 

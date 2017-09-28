@@ -29,10 +29,12 @@ abstract class Request
 
     /**
      * @param string $endpoint
+     * @return $this
      */
     public function setEndpoint(string $endpoint)
     {
         $this->endpoint = $endpoint;
+        return $this;
     }
 
     /**

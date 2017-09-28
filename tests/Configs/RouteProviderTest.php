@@ -8,7 +8,7 @@ use Betalabs\Engine\Configs\Exceptions\RouteProviderNotDefinedException;
 use Betalabs\Engine\Configs\Helper;
 use Betalabs\Engine\Configs\Reader;
 use Betalabs\Engine\Configs\RouteProvider;
-use Betalabs\Engine\Router;
+use Betalabs\Engine\RouteProvider;
 use Betalabs\Engine\Tests\TestCase;
 use DI\Container;
 
@@ -47,7 +47,7 @@ class RouteProviderTest extends TestCase
             ->with('/path/to/root/path/to/class.php')
             ->andReturn(true);
 
-        $router = \Mockery::mock(Router::class);
+        $router = \Mockery::mock(RouteProvider::class);
 
         $container = \Mockery::mock(Container::class);
         $container->shouldReceive('get')
@@ -85,7 +85,7 @@ class RouteProviderTest extends TestCase
             ->with('ClassName')
             ->andReturn(true);
 
-        $router = \Mockery::mock(Router::class);
+        $router = \Mockery::mock(RouteProvider::class);
 
         $container = \Mockery::mock(Container::class);
         $container->shouldReceive('get')

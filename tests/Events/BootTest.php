@@ -4,7 +4,7 @@ namespace Betalabs\Engine\Tests\Events;
 
 use Aura\Router\Map;
 use Aura\Router\Matcher;
-use Betalabs\Engine\Router;
+use Betalabs\Engine\RouteProvider;
 use Betalabs\Engine\Auth\Token;
 use Betalabs\Engine\Routes\Boot;
 use Aura\Router\RouterContainer;
@@ -127,7 +127,7 @@ class BootTest extends TestCase
     protected function mockRouteProvider()
     {
 
-        $router = \Mockery::mock(Router::class);
+        $router = \Mockery::mock(RouteProvider::class);
         $router->shouldReceive('route')
             ->once();
 
