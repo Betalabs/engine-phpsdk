@@ -7,7 +7,7 @@ use Betalabs\Engine\Configs\Exceptions\RouteFileDoesNotExistException;
 use Betalabs\Engine\Configs\Exceptions\RouteProviderNotDefinedException;
 use Betalabs\Engine\Configs\Helper;
 use Betalabs\Engine\Configs\Reader;
-use Betalabs\Engine\Configs\RouteProvider;
+use Betalabs\Engine\Configs\RouteProvider as RouteProviderConfig;
 use Betalabs\Engine\RouteProvider;
 use Betalabs\Engine\Tests\TestCase;
 use DI\Container;
@@ -55,7 +55,7 @@ class RouteProviderTest extends TestCase
             ->with('ClassName')
             ->andReturn($router);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $this->assertEquals(
             $router,
@@ -93,7 +93,7 @@ class RouteProviderTest extends TestCase
             ->with('ClassName')
             ->andReturn($router);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $this->assertEquals(
             $router,
@@ -128,7 +128,7 @@ class RouteProviderTest extends TestCase
 
         $container = \Mockery::mock(Container::class);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $routeProvider->routeProvider();
 
@@ -160,7 +160,7 @@ class RouteProviderTest extends TestCase
 
         $container = \Mockery::mock(Container::class);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $routeProvider->routeProvider();
 
@@ -183,7 +183,7 @@ class RouteProviderTest extends TestCase
 
         $container = \Mockery::mock(Container::class);
 
-        $routeProvider = new RouteProvider($reader, $helper, $container);
+        $routeProvider = new RouteProviderConfig($reader, $helper, $container);
 
         $routeProvider->routeProvider();
 
