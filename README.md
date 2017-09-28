@@ -216,4 +216,4 @@ Where `path` is the relative path to the file (based on the root directory) and 
 
 If this node does not exist then SDK informs Engine no migration process is needed.
 
-By default the `boot/migrate` route is automatically defined and treated by the SDK.
+By default the `boot/database` route is automatically defined and treated by the SDK.
