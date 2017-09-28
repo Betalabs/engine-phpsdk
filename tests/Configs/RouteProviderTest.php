@@ -3,7 +3,7 @@
 namespace Betalabs\Engine\Tests\Configs;
 
 use Betalabs\Engine\Configs\Exceptions\RouteClassDoesNotExistException;
-use Betalabs\Engine\Configs\Exceptions\RouteFileDoesNotExistException;
+use Betalabs\Engine\Configs\Exceptions\FileDoesNotExistException;
 use Betalabs\Engine\Configs\Exceptions\RouteProviderNotDefinedException;
 use Betalabs\Engine\Configs\Helper;
 use Betalabs\Engine\Configs\Reader;
@@ -105,7 +105,7 @@ class RouteProviderTest extends TestCase
     public function testExistingRouteProviderConfigWithPathUnexisting()
     {
 
-        $this->expectException(RouteFileDoesNotExistException::class);
+        $this->expectException(FileDoesNotExistException::class);
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')

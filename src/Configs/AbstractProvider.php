@@ -2,7 +2,7 @@
 
 namespace Betalabs\Engine\Configs;
 
-use Betalabs\Engine\Configs\Exceptions\RouteFileDoesNotExistException;
+use Betalabs\Engine\Configs\Exceptions\FileDoesNotExistException;
 use DI\Container;
 use DI\ContainerBuilder;
 
@@ -32,7 +32,7 @@ abstract class AbstractProvider
      * Require given path
      *
      * @param $config
-     * @throws \Betalabs\Engine\Configs\Exceptions\RouteFileDoesNotExistException
+     * @throws \Betalabs\Engine\Configs\Exceptions\FileDoesNotExistException
      */
     protected function requireClassPath($config)
     {
@@ -40,7 +40,7 @@ abstract class AbstractProvider
         $path = rtrim($this->reader->getRootPath(), '/') . '/' . ltrim($config->path, '/');
 
         if (!$this->helper->fileExists($path)) {
-            throw new RouteFileDoesNotExistException('File ' . $path . ' defined in configuration does not exist');
+            throw new FileDoesNotExistException('File ' . $path . ' defined in configuration does not exist');
         }
 
         $this->helper->requireFileOnce($path);

@@ -5,10 +5,22 @@ namespace Betalabs\Engine\Routes;
 use Aura\Router\Map;
 use Betalabs\Engine\Permissions\Boot;
 use Betalabs\Engine\RouteProvider;
-use DI\ContainerBuilder;
+use DI\Container;
 
 class Reserved implements RouteProvider
 {
+
+    /** @var \DI\Container */
+    protected $container;
+
+    /**
+     * Reserved constructor.
+     * @param \DI\Container $container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * Declare reserved routes
@@ -31,18 +43,25 @@ class Reserved implements RouteProvider
 
         $map->get(
             'permission-boot',
-            'boot/permission',
+            '/boot/permission',
             function() {
-
-                $container = ContainerBuilder::buildDevContainer();
-
-                /** @var \Betalabs\Engine\Permissions\Boot $boot */
-                $boot = $container->get(Boot::class);
-
-                $this->buildEngineDefaultResponse($boot->render());
-
+                echo $this->responsePermissionBoot();
             }
         );
+
+    }
+
+    /**
+     * Build permission boot route response
+     *
+     * @return string
+     */
+    public function responsePermissionBoot()
+    {
+
+        $boot = $this->container->get(Boot::class);
+
+        return $this->buildEngineDefaultResponse($boot->render());
 
     }
 
@@ -53,10 +72,11 @@ class Reserved implements RouteProvider
      * property
      *
      * @param $data
+     * @return string
      */
     protected function buildEngineDefaultResponse($data)
     {
-        echo json_encode([
+        return json_encode([
             'data' => $data
         ]);
     }

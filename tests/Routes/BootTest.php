@@ -1,6 +1,6 @@
 <?php
 
-namespace Betalabs\Engine\Tests\Events;
+namespace Betalabs\Engine\Tests\Routes;
 
 use Aura\Router\Map;
 use Aura\Router\Matcher;
