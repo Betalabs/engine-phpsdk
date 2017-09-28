@@ -1,6 +1,6 @@
 <?php
 
-namespace Betalabs\Engine\Database;
+namespace Betalabs\Engine\Migration;
 
 class BootResponse
 {

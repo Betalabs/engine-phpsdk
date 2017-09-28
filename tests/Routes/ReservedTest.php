@@ -3,7 +3,7 @@
 namespace Betalabs\Engine\Tests\Routes;
 
 use Aura\Router\Map;
-use Betalabs\Engine\Database\Boot as DatabaseBoot;
+use Betalabs\Engine\Migration\Boot as DatabaseBoot;
 use Betalabs\Engine\Permissions\Boot as PermissionBoot;
 use Betalabs\Engine\Routes\Reserved;
 use Betalabs\Engine\Tests\TestCase;

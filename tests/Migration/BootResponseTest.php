@@ -1,8 +1,8 @@
 <?php
 
-namespace Betalabs\Engine\Tests\Database;
+namespace Betalabs\Engine\Tests\Migration;
 
-use Betalabs\Engine\Database\BootResponse;
+use Betalabs\Engine\Migration\BootResponse;
 use Betalabs\Engine\Tests\TestCase;
 
 class BootResponseTest extends TestCase

@@ -2,7 +2,7 @@
 
 namespace Betalabs\Engine\Configs\Exceptions;
 
-class DatabaseClassDoesNotExistException extends \Exception
+class MigrationClassDoesNotExistException extends \Exception
 {
     //
 }

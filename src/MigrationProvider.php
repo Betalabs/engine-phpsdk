@@ -2,13 +2,13 @@
 
 namespace Betalabs\Engine;
 
-interface DatabaseProvider
+interface MigrationProvider
 {
 
     /**
      * Run database migration
      *
-     * @return \Betalabs\Engine\Database\BootResponse
+     * @return \Betalabs\Engine\Migration\BootResponse
      */
     public function run();
 

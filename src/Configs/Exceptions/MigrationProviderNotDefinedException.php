@@ -2,7 +2,7 @@
 
 namespace Betalabs\Engine\Configs\Exceptions;
 
-class DatabaseProviderNotDefinedException extends \Exception
+class MigrationProviderNotDefinedException extends \Exception
 {
     //
 }

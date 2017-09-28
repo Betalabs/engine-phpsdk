@@ -1,22 +1,22 @@
 <?php
 
-namespace Betalabs\Engine\Database;
+namespace Betalabs\Engine\Migration;
 
-use Betalabs\Engine\Configs\DatabaseProvider;
-use Betalabs\Engine\Configs\Exceptions\DatabaseProviderNotDefinedException;
+use Betalabs\Engine\Configs\MigrationProvider;
+use Betalabs\Engine\Configs\Exceptions\MigrationProviderNotDefinedException;
 
 class Boot
 {
 
-    /** @var \Betalabs\Engine\Configs\DatabaseProvider */
+    /** @var \Betalabs\Engine\Configs\MigrationProvider */
     protected $databaseProvider;
 
     /**
      * Boot constructor.
      *
-     * @param \Betalabs\Engine\Configs\DatabaseProvider $databaseProvider
+     * @param \Betalabs\Engine\Configs\MigrationProvider $databaseProvider
      */
-    public function __construct(DatabaseProvider $databaseProvider)
+    public function __construct(MigrationProvider $databaseProvider)
     {
         $this->databaseProvider = $databaseProvider;
     }
@@ -32,10 +32,10 @@ class Boot
         try {
 
             $bootResponse = $this->databaseProvider
-                    ->databaseProvider()
+                    ->migrationProvider()
                     ->run();
 
-        } catch(DatabaseProviderNotDefinedException $e) {
+        } catch(MigrationProviderNotDefinedException $e) {
 
             $bootResponse = new BootResponse(
                 true,

@@ -2,57 +2,57 @@
 
 namespace Betalabs\Engine\Tests\Configs;
 
-use Betalabs\Engine\Configs\DatabaseProvider;
-use Betalabs\Engine\Configs\Exceptions\DatabaseClassDoesNotExistException;
-use Betalabs\Engine\Configs\Exceptions\DatabaseProviderNotDefinedException;
+use Betalabs\Engine\Configs\MigrationProvider;
+use Betalabs\Engine\Configs\Exceptions\MigrationClassDoesNotExistException;
+use Betalabs\Engine\Configs\Exceptions\MigrationProviderNotDefinedException;
 use Betalabs\Engine\Configs\Helper;
 use Betalabs\Engine\Configs\Reader;
 use Betalabs\Engine\Tests\TestCase;
 use DI\Container;
 
-class DatabaseProviderTest extends TestCase
+class MigrationProviderTest extends TestCase
 {
 
-    public function testDatabaseProviderExistsWithoutPathInConfigFile()
+    public function testMigrationProviderExistsWithoutPathInConfigFile()
     {
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->times(2)
             ->andReturn((object) [
-                'databaseProvider' => (object)[
-                    'class' => 'Database\Provider'
+                'migrationProvider' => (object)[
+                    'class' => 'Migration\Provider'
                 ]
             ]);
 
         $helper = \Mockery::mock(Helper::class);
         $helper->shouldReceive('classExists')
-            ->with('Database\Provider')
+            ->with('Migration\Provider')
             ->andReturn(true);
 
         $container = \Mockery::mock(Container::class);
         $container->shouldReceive('get')
-            ->with('Database\Provider')
+            ->with('Migration\Provider')
             ->andReturn('success');
 
-        $config = new DatabaseProvider($reader, $helper, $container);
+        $config = new MigrationProvider($reader, $helper, $container);
 
         $this->assertEquals(
             'success',
-            $config->databaseProvider()
+            $config->migrationProvider()
         );
 
     }
 
-    public function testDatabaseProviderExistsWithPathInConfigFile()
+    public function testMigrationProviderExistsWithPathInConfigFile()
     {
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->times(2)
             ->andReturn((object) [
-                'databaseProvider' => (object)[
-                    'class' => 'Database\Provider',
+                'migrationProvider' => (object)[
+                    'class' => 'Migration\Provider',
                     'path' => 'file/path.php'
                 ]
             ]);
@@ -68,27 +68,27 @@ class DatabaseProviderTest extends TestCase
             ->with('root/file/path.php')
             ->andReturn(true);
         $helper->shouldReceive('classExists')
-            ->with('Database\Provider')
+            ->with('Migration\Provider')
             ->andReturn(true);
 
         $container = \Mockery::mock(Container::class);
         $container->shouldReceive('get')
-            ->with('Database\Provider')
+            ->with('Migration\Provider')
             ->andReturn('success');
 
-        $config = new DatabaseProvider($reader, $helper, $container);
+        $config = new MigrationProvider($reader, $helper, $container);
 
         $this->assertEquals(
             'success',
-            $config->databaseProvider()
+            $config->migrationProvider()
         );
 
     }
 
-    public function testDatabaseProviderNodeIsNotInformed()
+    public function testMigrationProviderNodeIsNotInformed()
     {
 
-        $this->expectException(DatabaseProviderNotDefinedException::class);
+        $this->expectException(MigrationProviderNotDefinedException::class);
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
@@ -98,36 +98,36 @@ class DatabaseProviderTest extends TestCase
         $helper = \Mockery::mock(Helper::class);
         $container = \Mockery::mock(Container::class);
 
-        $config = new DatabaseProvider($reader, $helper, $container);
+        $config = new MigrationProvider($reader, $helper, $container);
 
-        $config->databaseProvider();
+        $config->migrationProvider();
 
     }
 
-    public function testDatabaseProviderClassDoesNotExist()
+    public function testMigrationProviderClassDoesNotExist()
     {
 
-        $this->expectException(DatabaseClassDoesNotExistException::class);
+        $this->expectException(MigrationClassDoesNotExistException::class);
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->times(2)
             ->andReturn((object) [
-                'databaseProvider' => (object)[
-                    'class' => 'Database\Provider',
+                'migrationProvider' => (object)[
+                    'class' => 'Migration\Provider',
                 ]
             ]);
 
         $helper = \Mockery::mock(Helper::class);
         $helper->shouldReceive('classExists')
-            ->with('Database\Provider')
+            ->with('Migration\Provider')
             ->andReturn(false);
 
         $container = \Mockery::mock(Container::class);
 
-        $config = new DatabaseProvider($reader, $helper, $container);
+        $config = new MigrationProvider($reader, $helper, $container);
 
-        $config->databaseProvider();
+        $config->migrationProvider();
 
     }
 
