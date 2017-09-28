@@ -5,7 +5,6 @@ namespace Betalabs\Engine\Routes;
 use Aura\Router\Map;
 use Betalabs\Engine\Permissions\Boot;
 use Betalabs\Engine\RouteProvider;
-use DI\Container;
 use DI\ContainerBuilder;
 
 class Reserved implements RouteProvider

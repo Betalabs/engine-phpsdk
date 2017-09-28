@@ -28,7 +28,6 @@ class Boot
         PermissionProvider $permissionProvider,
         Register $register
     ) {
-
         $this->permissionProvider = $permissionProvider;
         $this->register = $register;
     }
@@ -98,6 +97,22 @@ class Boot
     }
 
     /**
+     * Inform Engine permissions were not defined
+     */
+    protected function permissionsNotDefined()
+    {
+        throw new NotFoundHttpException();
+    }
+
+    /**
+     * Clear all permissions
+     */
+    public static function clearPermissions()
+    {
+        self::$permissions = [];
+    }
+
+    /**
      * @return \Betalabs\Engine\Permissions\Permission[]
      */
     public static function getPermissions(): array
@@ -112,14 +127,5 @@ class Boot
     {
         self::$permissions = $permissions;
     }
-
-    /**
-     * Inform Engine permissions were not defined
-     */
-    protected function permissionsNotDefined()
-    {
-        throw new NotFoundHttpException();
-    }
-
 
 }

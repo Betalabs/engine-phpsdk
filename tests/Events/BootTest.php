@@ -4,7 +4,6 @@ namespace Betalabs\Engine\Tests\Events;
 
 use Aura\Router\Map;
 use Aura\Router\Matcher;
-use Betalabs\Engine\RouteProvider as RouteProviderInterface;
 use Betalabs\Engine\Auth\Token;
 use Betalabs\Engine\RouteProvider;
 use Betalabs\Engine\Routes\Boot;
@@ -189,7 +188,8 @@ class BootTest extends TestCase
     protected function mockReserved()
     {
         $reserved = \Mockery::mock(Reserved::class);
-        $reserved->shouldReceive('route');
+        $reserved->shouldReceive('route')
+            ->once();
         return $reserved;
     }
 
