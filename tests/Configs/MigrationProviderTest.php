@@ -2,57 +2,57 @@
 
 namespace Betalabs\Engine\Tests\Configs;
 
-use Betalabs\Engine\Configs\Exceptions\PermissionClassDoesNotExistException;
-use Betalabs\Engine\Configs\Exceptions\PermissionProviderNotDefinedException;
+use Betalabs\Engine\Configs\MigrationProvider;
+use Betalabs\Engine\Configs\Exceptions\MigrationClassDoesNotExistException;
+use Betalabs\Engine\Configs\Exceptions\MigrationProviderNotDefinedException;
 use Betalabs\Engine\Configs\Helper;
-use Betalabs\Engine\Configs\PermissionProvider;
 use Betalabs\Engine\Configs\Reader;
 use Betalabs\Engine\Tests\TestCase;
 use DI\Container;
 
-class PermissionProviderTest extends TestCase
+class MigrationProviderTest extends TestCase
 {
 
-    public function testPermissionProviderExistsWithoutPathInConfigFile()
+    public function testMigrationProviderExistsWithoutPathInConfigFile()
     {
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->times(2)
             ->andReturn((object) [
-                'permissionProvider' => (object)[
-                    'class' => 'Permission\Provider'
+                'migrationProvider' => (object)[
+                    'class' => 'Migration\Provider'
                 ]
             ]);
 
         $helper = \Mockery::mock(Helper::class);
         $helper->shouldReceive('classExists')
-            ->with('Permission\Provider')
+            ->with('Migration\Provider')
             ->andReturn(true);
 
         $container = \Mockery::mock(Container::class);
         $container->shouldReceive('get')
-            ->with('Permission\Provider')
+            ->with('Migration\Provider')
             ->andReturn('success');
 
-        $config = new PermissionProvider($reader, $helper, $container);
+        $config = new MigrationProvider($reader, $helper, $container);
 
         $this->assertEquals(
             'success',
-            $config->permissionProvider()
+            $config->migrationProvider()
         );
 
     }
 
-    public function testPermissionProviderExistsWithPathInConfigFile()
+    public function testMigrationProviderExistsWithPathInConfigFile()
     {
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->times(2)
             ->andReturn((object) [
-                'permissionProvider' => (object)[
-                    'class' => 'Permission\Provider',
+                'migrationProvider' => (object)[
+                    'class' => 'Migration\Provider',
                     'path' => 'file/path.php'
                 ]
             ]);
@@ -68,27 +68,27 @@ class PermissionProviderTest extends TestCase
             ->with('root/file/path.php')
             ->andReturn(true);
         $helper->shouldReceive('classExists')
-            ->with('Permission\Provider')
+            ->with('Migration\Provider')
             ->andReturn(true);
 
         $container = \Mockery::mock(Container::class);
         $container->shouldReceive('get')
-            ->with('Permission\Provider')
+            ->with('Migration\Provider')
             ->andReturn('success');
 
-        $config = new PermissionProvider($reader, $helper, $container);
+        $config = new MigrationProvider($reader, $helper, $container);
 
         $this->assertEquals(
             'success',
-            $config->permissionProvider()
+            $config->migrationProvider()
         );
 
     }
 
-    public function testPermissionProviderNodeIsNotInformed()
+    public function testMigrationProviderNodeIsNotInformed()
     {
 
-        $this->expectException(PermissionProviderNotDefinedException::class);
+        $this->expectException(MigrationProviderNotDefinedException::class);
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
@@ -98,36 +98,36 @@ class PermissionProviderTest extends TestCase
         $helper = \Mockery::mock(Helper::class);
         $container = \Mockery::mock(Container::class);
 
-        $config = new PermissionProvider($reader, $helper, $container);
+        $config = new MigrationProvider($reader, $helper, $container);
 
-        $config->permissionProvider();
+        $config->migrationProvider();
 
     }
 
-    public function testPermissionProviderClassDoesNotExist()
+    public function testMigrationProviderClassDoesNotExist()
     {
 
-        $this->expectException(PermissionClassDoesNotExistException::class);
+        $this->expectException(MigrationClassDoesNotExistException::class);
 
         $reader = \Mockery::mock(Reader::class);
         $reader->shouldReceive('load')
             ->times(2)
             ->andReturn((object) [
-                'permissionProvider' => (object)[
-                    'class' => 'Permission\Provider',
+                'migrationProvider' => (object)[
+                    'class' => 'Migration\Provider',
                 ]
             ]);
 
         $helper = \Mockery::mock(Helper::class);
         $helper->shouldReceive('classExists')
-            ->with('Permission\Provider')
+            ->with('Migration\Provider')
             ->andReturn(false);
 
         $container = \Mockery::mock(Container::class);
 
-        $config = new PermissionProvider($reader, $helper, $container);
+        $config = new MigrationProvider($reader, $helper, $container);
 
-        $config->permissionProvider();
+        $config->migrationProvider();
 
     }
 

@@ -81,6 +81,10 @@ This is its basic format:
         <path></path>
         <class></class>
     </permissionProvider>
+    <migrationProvider>
+        <path></path>
+        <class></class>
+    </migrationProvider>
 </engine-sdk>
 ```
 
@@ -175,6 +179,41 @@ The location of this file is declared in configuration file:
 
 Where `path` is the relative path to the file (based on the root directory) and `class` is the class name (with namespace if exists). The `path` is not required when the class is autoloaded.
 
-If this class does not exist or no permission is declared then an 404 HTTP code is returned to Engine when it asks for the permission.
+If this node does not exist or no permission is declared then an 404 HTTP code is returned to Engine when it asks for the permission.
 
 By default the `boot/permission` route is automatically defined and treated by the SDK.
+
+## Database migration
+
+During the App boot process Engine starts migration process. You can create a class that implements `Betalabs\Engine\MigrationProvider`. This class must own a method that runs the migration:
+
+```php
+public function run()
+{
+
+    // Migration process
+
+    return new \Betalabs\Engine\Migration\BootResponse(
+        true,
+        'Success!'
+    );
+    
+}
+```
+
+It is necessary to return an `Betalabs\Engine\Migration\BootResponse` object, this way Engine will be able to log what happen during this process.
+
+The location of this file is declared in configuration file:
+
+```xml
+<migrationProvider>
+    <path></path>
+    <class></class>
+</migrationProvider>
+```
+
+Where `path` is the relative path to the file (based on the root directory) and `class` is the class name (with namespace if exists). The `path` is not required when the class is autoloaded.
+
+If this node does not exist then SDK informs Engine no migration process is needed.
+
+By default the `boot/database` route is automatically defined and treated by the SDK.

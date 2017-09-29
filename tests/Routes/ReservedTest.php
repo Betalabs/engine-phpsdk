@@ -3,7 +3,8 @@
 namespace Betalabs\Engine\Tests\Routes;
 
 use Aura\Router\Map;
-use Betalabs\Engine\Permissions\Boot;
+use Betalabs\Engine\Migration\Boot as DatabaseBoot;
+use Betalabs\Engine\Permissions\Boot as PermissionBoot;
 use Betalabs\Engine\Routes\Reserved;
 use Betalabs\Engine\Tests\TestCase;
 use DI\Container;
@@ -11,7 +12,7 @@ use DI\Container;
 class ReservedTest extends TestCase
 {
 
-    public function testPermissionRouteIsIncluded()
+    public function testAllRouteIsIncluded()
     {
 
         $container = \Mockery::mock(Container::class);
@@ -20,7 +21,7 @@ class ReservedTest extends TestCase
 
         $map = \Mockery::mock(Map::class);
         $map->shouldReceive('get')
-            ->once();
+            ->times(2);
 
         $this->assertNull($reserved->route($map));
 
@@ -29,13 +30,13 @@ class ReservedTest extends TestCase
     public function testPermissionRouteResponse()
     {
 
-        $boot = \Mockery::mock(Boot::class);
+        $boot = \Mockery::mock(PermissionBoot::class);
         $boot->shouldReceive('render')
             ->andReturn('success');
 
         $container = \Mockery::mock(Container::class);
         $container->shouldReceive('get')
-            ->with(Boot::class)
+            ->with(PermissionBoot::class)
             ->andReturn($boot);
 
         $reserved = new Reserved($container);
@@ -45,6 +46,29 @@ class ReservedTest extends TestCase
                 'data' => 'success'
             ]),
             $reserved->responsePermissionBoot()
+        );
+
+    }
+
+    public function testDatabaseRouteResponse()
+    {
+
+        $boot = \Mockery::mock(DatabaseBoot::class);
+        $boot->shouldReceive('run')
+            ->andReturn('success');
+
+        $container = \Mockery::mock(Container::class);
+        $container->shouldReceive('get')
+            ->with(DatabaseBoot::class)
+            ->andReturn($boot);
+
+        $reserved = new Reserved($container);
+
+        $this->assertEquals(
+            json_encode([
+                'data' => 'success'
+            ]),
+            $reserved->responseDatabaseBoot()
         );
 
     }
