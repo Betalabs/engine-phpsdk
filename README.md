@@ -193,7 +193,7 @@ public function run()
 
     // Migration process
 
-    return new \Betalabs\Engine\Migration\BootResponse(
+    return new \Betalabs\Engine\Requests\BootResponse(
         true,
         'Success!'
     );
@@ -201,7 +201,7 @@ public function run()
 }
 ```
 
-It is necessary to return an `Betalabs\Engine\Migration\BootResponse` object, this way Engine will be able to log what happen during this process.
+It is necessary to return an `Betalabs\Engine\Requests\BootResponse` object, this way Engine will be able to log what happen during this process.
 
 The location of this file is declared in configuration file:
 

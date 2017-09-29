@@ -5,7 +5,7 @@ namespace Betalabs\Engine\Tests\Migration;
 use Betalabs\Engine\Configs\MigrationProvider;
 use Betalabs\Engine\Configs\Exceptions\MigrationProviderNotDefinedException;
 use Betalabs\Engine\Migration\Boot;
-use Betalabs\Engine\Migration\BootResponse;
+use Betalabs\Engine\Requests\BootResponse;
 use Betalabs\Engine\MigrationProvider as MigrationProviderInterface;
 use Betalabs\Engine\Tests\TestCase;
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace Betalabs\Engine\Tests\Request\Methods;
+namespace Betalabs\Engine\Tests\Requests\Methods;
 
-use Betalabs\Engine\Requests\Methods\Delete;
+use Betalabs\Engine\Requests\Methods\Patch;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Betalabs\Engine\Requests\Header;
 use Betalabs\Engine\Tests\TestCase;
 use GuzzleHttp\Client;
 
-class DeleteTest extends TestCase
+class PatchTest extends TestCase
 {
 
     public function testPostMethod()
@@ -23,7 +23,7 @@ class DeleteTest extends TestCase
                 'header-key' => 'header-value'
             ]);
 
-        $put = new Delete($client, $header);
+        $put = new Patch($client, $header);
         $put->setEndpoint('http://test.local/');
 
         $this->assertEquals(
@@ -61,7 +61,7 @@ class DeleteTest extends TestCase
             ->andReturn($stream);
 
         $client = \Mockery::mock(Client::class);
-        $client->shouldReceive('delete')
+        $client->shouldReceive('patch')
             ->once()
             ->with('http://test.local/api/path/to/api', [
                 'json' => ['parameter1' => 'fieldOne', 'parameter2' => 'fieldTwo'],

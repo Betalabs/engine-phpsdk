@@ -1,6 +1,6 @@
 <?php
 
-namespace Betalabs\Engine\Tests\Request\Methods;
+namespace Betalabs\Engine\Tests\Requests\Methods;
 
 use Betalabs\Engine\Requests\Header;
 use Betalabs\Engine\Requests\Methods\Request;

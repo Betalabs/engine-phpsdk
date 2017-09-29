@@ -1,18 +1,18 @@
 <?php
 
-namespace Betalabs\Engine\Tests\Request\Methods;
+namespace Betalabs\Engine\Tests\Requests\Methods;
 
-use Betalabs\Engine\Requests\Methods\Put;
+use Betalabs\Engine\Requests\Methods\Get;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Betalabs\Engine\Requests\Header;
 use Betalabs\Engine\Tests\TestCase;
 use GuzzleHttp\Client;
 
-class PutTest extends TestCase
+class GetTest extends TestCase
 {
 
-    public function testPostMethod()
+    public function testGetMethod()
     {
 
         $client = $this->mockClient();
@@ -23,8 +23,8 @@ class PutTest extends TestCase
                 'header-key' => 'header-value'
             ]);
 
-        $put = new Put($client, $header);
-        $put->setEndpoint('http://test.local/');
+        $get = new Get($client, $header);
+        $get->setEndpoint('http://test.local/');
 
         $this->assertEquals(
             (object)[
@@ -34,10 +34,7 @@ class PutTest extends TestCase
                     'three' => 'field3'
                 ]
             ],
-            $put->send('path/to/api', [
-                'parameter1' => 'fieldOne',
-                'parameter2' => 'fieldTwo'
-            ])
+            $get->send('path/to/api')
         );
 
     }
@@ -61,10 +58,9 @@ class PutTest extends TestCase
             ->andReturn($stream);
 
         $client = \Mockery::mock(Client::class);
-        $client->shouldReceive('put')
+        $client->shouldReceive('get')
             ->once()
             ->with('http://test.local/api/path/to/api', [
-                'json' => ['parameter1' => 'fieldOne', 'parameter2' => 'fieldTwo'],
                 'headers' => ['header-key' => 'header-value']
             ])
             ->andReturn($response);

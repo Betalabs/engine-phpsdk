@@ -1,6 +1,6 @@
 <?php
 
-namespace Betalabs\Engine\Tests\Request;
+namespace Betalabs\Engine\Tests\Requests;
 
 use Betalabs\Engine\Requests\Methods\Delete;
 use Betalabs\Engine\Requests\Methods\Get;

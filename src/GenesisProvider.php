@@ -2,11 +2,11 @@
 
 namespace Betalabs\Engine;
 
-interface MigrationProvider
+interface GenesisProvider
 {
 
     /**
-     * Run database migration
+     * Run genesis boot
      *
      * @return \Betalabs\Engine\Requests\BootResponse
      */
