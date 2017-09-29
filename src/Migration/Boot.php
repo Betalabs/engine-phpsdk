@@ -4,6 +4,7 @@ namespace Betalabs\Engine\Migration;
 
 use Betalabs\Engine\Configs\MigrationProvider;
 use Betalabs\Engine\Configs\Exceptions\MigrationProviderNotDefinedException;
+use Betalabs\Engine\Requests\BootResponse;
 
 class Boot
 {

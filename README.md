@@ -85,6 +85,10 @@ This is its basic format:
         <path></path>
         <class></class>
     </migrationProvider>
+    <genesisProvider>
+        <path></path>
+        <class></class>
+    </genesisProvider>
 </engine-sdk>
 ```
 
@@ -193,7 +197,7 @@ public function run()
 
     // Migration process
 
-    return new \Betalabs\Engine\Migration\BootResponse(
+    return new \Betalabs\Engine\Requests\BootResponse(
         true,
         'Success!'
     );
@@ -201,7 +205,7 @@ public function run()
 }
 ```
 
-It is necessary to return an `Betalabs\Engine\Migration\BootResponse` object, this way Engine will be able to log what happen during this process.
+It is necessary to return an `Betalabs\Engine\Requests\BootResponse` object, this way Engine will be able to log what happen during this process.
 
 The location of this file is declared in configuration file:
 
@@ -217,3 +221,38 @@ Where `path` is the relative path to the file (based on the root directory) and 
 If this node does not exist then SDK informs Engine no migration process is needed.
 
 By default the `boot/database` route is automatically defined and treated by the SDK.
+
+## Genesis boot
+
+During process of associate an App with a tenant Engine boot Genesis process. You can create a class that implements `Betalabs\Engine\GenesisProvider`. This class must own a method that runs the migration:
+
+```php
+public function run()
+{
+
+    // Genesis process
+
+    return new \Betalabs\Engine\Requests\BootResponse(
+        true,
+        'Success!'
+    );
+    
+}
+```
+
+It is necessary to return an `Betalabs\Engine\Requests\BootResponse` object, this way Engine will be able to log what happen during this process.
+
+The location of this file is declared in configuration file:
+
+```xml
+<genesisProvider>
+    <path></path>
+    <class></class>
+</genesisProvider>
+```
+
+Where `path` is the relative path to the file (based on the root directory) and `class` is the class name (with namespace if exists). The `path` is not required when the class is autoloaded.
+
+If this node does not exist then SDK informs Engine no genesis process is needed.
+
+By default the `boot/genesis` route is automatically defined and treated by the SDK.

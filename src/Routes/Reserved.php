@@ -5,6 +5,7 @@ namespace Betalabs\Engine\Routes;
 use Aura\Router\Map;
 use Betalabs\Engine\Migration\Boot as DatabaseBoot;
 use Betalabs\Engine\Permissions\Boot as PermissionBoot;
+use Betalabs\Engine\Genesis\Boot as GenesisBoot;
 use Betalabs\Engine\RouteProvider;
 use DI\Container;
 
@@ -48,6 +49,14 @@ class Reserved implements RouteProvider
             }
         );
 
+        $map->get(
+            'genesis-boot',
+            '/boot/genesis',
+            function() {
+                echo $this->responseGenesisBoot();
+            }
+        );
+
     }
 
     /**
@@ -73,6 +82,20 @@ class Reserved implements RouteProvider
     {
 
         $boot = $this->container->get(DatabaseBoot::class);
+
+        return $this->buildEngineDefaultResponse($boot->run());
+
+    }
+
+    /**
+     * Build genesis boot route response
+     *
+     * @return string
+     */
+    public function responseGenesisBoot()
+    {
+
+        $boot = $this->container->get(GenesisBoot::class);
 
         return $this->buildEngineDefaultResponse($boot->run());
 

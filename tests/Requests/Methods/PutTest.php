@@ -1,15 +1,15 @@
 <?php
 
-namespace Betalabs\Engine\Tests\Request\Methods;
+namespace Betalabs\Engine\Tests\Requests\Methods;
 
-use Betalabs\Engine\Requests\Methods\Post;
+use Betalabs\Engine\Requests\Methods\Put;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Betalabs\Engine\Requests\Header;
 use Betalabs\Engine\Tests\TestCase;
 use GuzzleHttp\Client;
 
-class PostTest extends TestCase
+class PutTest extends TestCase
 {
 
     public function testPostMethod()
@@ -23,8 +23,8 @@ class PostTest extends TestCase
                 'header-key' => 'header-value'
             ]);
 
-        $post = new Post($client, $header);
-        $post->setEndpoint('http://test.local/');
+        $put = new Put($client, $header);
+        $put->setEndpoint('http://test.local/');
 
         $this->assertEquals(
             (object)[
@@ -34,7 +34,7 @@ class PostTest extends TestCase
                     'three' => 'field3'
                 ]
             ],
-            $post->send('path/to/api', [
+            $put->send('path/to/api', [
                 'parameter1' => 'fieldOne',
                 'parameter2' => 'fieldTwo'
             ])
@@ -61,7 +61,7 @@ class PostTest extends TestCase
             ->andReturn($stream);
 
         $client = \Mockery::mock(Client::class);
-        $client->shouldReceive('post')
+        $client->shouldReceive('put')
             ->once()
             ->with('http://test.local/api/path/to/api', [
                 'json' => ['parameter1' => 'fieldOne', 'parameter2' => 'fieldTwo'],
