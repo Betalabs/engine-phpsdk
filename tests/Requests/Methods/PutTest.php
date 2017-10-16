@@ -2,6 +2,7 @@
 
 namespace Betalabs\Engine\Tests\Requests\Methods;
 
+use Betalabs\Engine\Requests\EndpointResolver;
 use Betalabs\Engine\Requests\Methods\Put;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -23,8 +24,11 @@ class PutTest extends TestCase
                 'header-key' => 'header-value'
             ]);
 
-        $put = new Put($client, $header);
-        $put->setEndpoint('http://test.local/');
+        $endpoint = \Mockery::mock(EndpointResolver::class);
+        $endpoint->shouldReceive('endpoint')
+            ->andReturn('http://test.local/');
+
+        $put = new Put($client, $header, $endpoint);
 
         $this->assertEquals(
             (object)[

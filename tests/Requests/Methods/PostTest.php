@@ -2,6 +2,7 @@
 
 namespace Betalabs\Engine\Tests\Requests\Methods;
 
+use Betalabs\Engine\Requests\EndpointResolver;
 use Betalabs\Engine\Requests\Methods\Post;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -23,8 +24,11 @@ class PostTest extends TestCase
                 'header-key' => 'header-value'
             ]);
 
-        $post = new Post($client, $header);
-        $post->setEndpoint('http://test.local/');
+        $endpoint = \Mockery::mock(EndpointResolver::class);
+        $endpoint->shouldReceive('endpoint')
+            ->andReturn('http://test.local/');
+
+        $post = new Post($client, $header, $endpoint);
 
         $this->assertEquals(
             (object)[

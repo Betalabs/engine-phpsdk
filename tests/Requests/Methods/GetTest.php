@@ -2,6 +2,7 @@
 
 namespace Betalabs\Engine\Tests\Requests\Methods;
 
+use Betalabs\Engine\Requests\EndpointResolver;
 use Betalabs\Engine\Requests\Methods\Get;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -23,8 +24,11 @@ class GetTest extends TestCase
                 'header-key' => 'header-value'
             ]);
 
-        $get = new Get($client, $header);
-        $get->setEndpoint('http://test.local/');
+        $endpoint = \Mockery::mock(EndpointResolver::class);
+        $endpoint->shouldReceive('endpoint')
+            ->andReturn('http://test.local/');
+
+        $get = new Get($client, $header, $endpoint);
 
         $this->assertEquals(
             (object)[

@@ -2,6 +2,7 @@
 
 namespace Betalabs\Engine\Requests\Methods;
 
+use Betalabs\Engine\Requests\EndpointResolver;
 use Betalabs\Engine\Requests\Header;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
@@ -15,6 +16,9 @@ abstract class Request
     /** @var \Psr\Http\Message\ResponseInterface */
     protected $response;
 
+    /** @var \Betalabs\Engine\Requests\EndpointResolver */
+    protected $endpointResolver;
+
     /** @var mixed */
     protected $contents;
 
@@ -22,56 +26,22 @@ abstract class Request
     protected $header;
 
     /** @var string */
-    protected $endpoint = 'http://engine.local';
-
-    /** @var string */
     protected $endpointSuffix = 'api';
-
-    /**
-     * @param string $endpoint
-     * @return $this
-     */
-    public function setEndpoint(string $endpoint)
-    {
-        $this->endpoint = $endpoint;
-        return $this;
-    }
-
-    /**
-     * @param string|null $endpointSuffix
-     * @return Request
-     */
-    public function setEndpointSuffix(string $endpointSuffix = null)
-    {
-        $this->endpointSuffix = $endpointSuffix;
-        return $this;
-    }
-
-    /**
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getContents()
-    {
-        return $this->contents;
-    }
 
     /**
      * Request constructor.
      * @param \GuzzleHttp\Client $client
      * @param \Betalabs\Engine\Requests\Header $header
+     * @param \Betalabs\Engine\Requests\EndpointResolver $endpointResolver
      */
-    public function __construct(Client $client, Header $header)
-    {
+    public function __construct(
+        Client $client,
+        Header $header,
+        EndpointResolver $endpointResolver
+    ) {
         $this->client = $client;
         $this->header = $header;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -86,7 +56,7 @@ abstract class Request
 
         $suffix = empty($this->endpointSuffix) ? '' : trim($this->endpointSuffix, '/') . '/';
 
-        return trim($this->endpoint, '/') .'/'. $suffix . $path;
+        return trim($this->endpointResolver->endpoint(), '/') .'/'. $suffix . $path;
 
     }
 
@@ -159,6 +129,32 @@ abstract class Request
     {
         $this->header->mustNotAuthorize();
         return $this;
+    }
+
+    /**
+     * @param string|null $endpointSuffix
+     * @return Request
+     */
+    public function setEndpointSuffix(string $endpointSuffix = null)
+    {
+        $this->endpointSuffix = $endpointSuffix;
+        return $this;
+    }
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContents()
+    {
+        return $this->contents;
     }
 
 }
