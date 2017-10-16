@@ -5,7 +5,9 @@ namespace Betalabs\Engine\Tests\Auth;
 use Betalabs\Engine\Auth\Exceptions\TokenExpiredException;
 use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
 use Betalabs\Engine\Auth\Token;
+use Betalabs\Engine\Configs\Auth;
 use Betalabs\Engine\Configs\Client;
+use Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException;
 use Betalabs\Engine\Requests\Methods\Post;
 use Carbon\Carbon;
 use Betalabs\Engine\Tests\TestCase;
@@ -19,7 +21,11 @@ class TokenTest extends TestCase
 
         $this->expectException(UnauthorizedException::class);
 
-        $token = new Token();
+        $auth = \Mockery::mock(Auth::class);
+        $auth->shouldReceive('accessToken')
+            ->andThrow(AuthInternalNotDefinedException::class);
+
+        $token = new Token($auth);
 
         $token->retrieveToken();
 
@@ -28,7 +34,11 @@ class TokenTest extends TestCase
     public function testNonExpiredTokenReturnsItself()
     {
 
-        $token = new Token();
+        $auth = \Mockery::mock(Auth::class);
+        $auth->shouldReceive('accessToken')
+            ->andThrow(AuthInternalNotDefinedException::class);
+
+        $token = new Token($auth);
 
         $accessToken = 'access-token-hash';
 
@@ -46,7 +56,11 @@ class TokenTest extends TestCase
 
         $this->expectException(TokenExpiredException::class);
 
-        $token = new Token();
+        $auth = \Mockery::mock(Auth::class);
+        $auth->shouldReceive('accessToken')
+            ->andThrow(AuthInternalNotDefinedException::class);
+
+        $token = new Token($auth);
 
         $token->informToken('bearer-token-hash', null, Carbon::now()->subMinute());
 
@@ -68,7 +82,11 @@ class TokenTest extends TestCase
 
         Carbon::setTestNow();
 
-        $token = new Token();
+        $auth = \Mockery::mock(Auth::class);
+        $auth->shouldReceive('accessToken')
+            ->andThrow(AuthInternalNotDefinedException::class);
+
+        $token = new Token($auth);
         $token->setDiContainer($container);
 
         $token->informToken('access-token-hash', 'refresh-token', Carbon::now()->subMinute());
