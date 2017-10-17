@@ -69,6 +69,15 @@ This is its basic format:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <engine-sdk>
+    <auth>
+        <accessToken></accessToken>
+        <refreshToken></refreshToken>
+        <expiresAt></expiresAt>
+    </auth>
+    <environment>
+        <env></env>
+        <endpoint></endpoint>
+    </environment>
     <client>
         <id></id>
         <secret></secret>
@@ -256,3 +265,40 @@ Where `path` is the relative path to the file (based on the root directory) and 
 If this node does not exist then SDK informs Engine no genesis process is needed.
 
 By default the `boot/genesis` route is automatically defined and treated by the SDK.
+
+## Development
+
+During development you might want to manually define tokens and endpoints. It is possible using configuration file.
+
+### Endpoint
+
+By default all requests are dispatched against production URL however you can change this behavior using `environment` section in configuration file.
+
+```xml
+<environment>
+    <env></env>
+    <endpoint></endpoint>
+</environment>
+```
+
+`env` node can be filled with two values: `Sandbox` or `Production`; this way the endpoint URL will be automatically defined. Nevertheless if you fill `endpoint` node this value will be used as endpoint URL independently `env` node value.
+
+`environment`, `env` and `endpoint` nodes are not required.
+
+### Token
+
+You might want to use a specific token to access Engine API. This can be done through `auth` section in configuration file:
+
+```xml
+<auth>
+    <accessToken></accessToken>
+    <refreshToken></refreshToken>
+    <expiresAt></expiresAt>
+</auth>
+```
+
+- `accessToken` is the access token string to be used in all requests
+- `refreshToken` is the refresh token string to be used if access token expires
+- `expiresAt` is the timestamp integer of when the access token expires
+
+The `auth` node is not required, however to be used all subnodes (`accessToken`, `refreshToken`, `expiresAt`) must be declared.
