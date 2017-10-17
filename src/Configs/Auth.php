@@ -49,7 +49,7 @@ class Auth extends AbstractProvider
     /**
      * Return expiresAt for accessToken
      *
-     * @return string
+     * @return int
      * @throws \Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException
      */
     public function expiresAt()

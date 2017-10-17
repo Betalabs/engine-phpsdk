@@ -104,8 +104,38 @@ class TokenTest extends TestCase
         );
 
         $this->assertEquals(
-            Carbon::now()->addSeconds(60)->timestamp,
+            Carbon::now()->addMinute()->timestamp,
             Token::getExpiresAt()->timestamp
+        );
+
+    }
+
+    public function testTokenDefinedInConfigIsReturnedOverOthers()
+    {
+
+        $accessToken = 'config-access-token-hash';
+        $refreshToken = 'config-refresh-token-hash';
+
+        $auth = \Mockery::mock(Auth::class);
+        $auth->shouldReceive('accessToken')
+            ->andReturn($accessToken);
+        $auth->shouldReceive('refreshToken')
+            ->andReturn($refreshToken);
+        $auth->shouldReceive('expiresAt')
+            ->andReturn(Carbon::now()->addMinute()->timestamp);
+
+        $token = new Token($auth);
+
+        $token->informToken('access-token-hash', 'refresh-token', Carbon::now()->addMinute());
+
+        $this->assertEquals(
+            $accessToken,
+            $token->retrieveToken()
+        );
+
+        $this->assertEquals(
+            $refreshToken,
+            Token::getRefreshToken()
         );
 
     }

@@ -4,6 +4,7 @@ namespace Betalabs\Engine\Auth;
 
 use Betalabs\Engine\Auth\Exceptions\TokenExpiredException;
 use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
+use Betalabs\Engine\Configs\Auth;
 use Betalabs\Engine\Configs\Client;
 use Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException;
 use Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException;
@@ -34,7 +35,7 @@ class Token
      * Token constructor.
      * @param \Betalabs\Engine\Configs\Auth $config
      */
-    public function __construct(\Betalabs\Engine\Configs\Auth $config)
+    public function __construct(Auth $config)
     {
         $this->config = $config;
     }
@@ -131,7 +132,7 @@ class Token
         try {
             self::$accessToken = $this->config->accessToken();
             self::$refreshToken = $this->config->refreshToken();
-            self::$expiresAt = $this->config->expiresAt();
+            self::$expiresAt = Carbon::createFromTimestamp($this->config->expiresAt());
         } catch(AuthNotDefinedException | AuthInternalNotDefinedException $e) {
             self::$accessToken = self::$accessToken ?? null;
             self::$refreshToken = self::$refreshToken ?? null;
