@@ -4,7 +4,10 @@ namespace Betalabs\Engine\Auth;
 
 use Betalabs\Engine\Auth\Exceptions\TokenExpiredException;
 use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
+use Betalabs\Engine\Configs\Auth;
 use Betalabs\Engine\Configs\Client;
+use Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException;
+use Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException;
 use Betalabs\Engine\Requests\Methods\Post;
 use Carbon\Carbon;
 use DI\Container;
@@ -12,6 +15,9 @@ use DI\ContainerBuilder;
 
 class Token
 {
+
+    /** @var \Betalabs\Engine\Configs\Auth */
+    protected $config;
 
     /** @var \DI\Container */
     protected $diContainer;
@@ -24,6 +30,15 @@ class Token
 
     /** @var \Carbon\Carbon */
     protected static $expiresAt;
+
+    /**
+     * Token constructor.
+     * @param \Betalabs\Engine\Configs\Auth $config
+     */
+    public function __construct(Auth $config)
+    {
+        $this->config = $config;
+    }
 
     /**
      * Inform the bearer token information
@@ -51,6 +66,8 @@ class Token
     public function retrieveToken()
     {
 
+        $this->retrieveConfig();
+
         if(is_null(self::$accessToken)) {
             throw new UnauthorizedException(
                 'Token not informed. Impossible to authenticate'
@@ -72,6 +89,8 @@ class Token
      */
     public function refreshToken()
     {
+
+        $this->retrieveConfig();
 
         if(is_null(self::$refreshToken)) {
             throw new TokenExpiredException('Token expired and there is no refresh token available');
@@ -101,6 +120,24 @@ class Token
             $response->refresh_token,
             Carbon::now()->addSeconds($response->expires_in)
         );
+
+    }
+
+    /**
+     * Retrieve data from configuration
+     */
+    protected function retrieveConfig()
+    {
+
+        try {
+            self::$accessToken = $this->config->accessToken();
+            self::$refreshToken = $this->config->refreshToken();
+            self::$expiresAt = Carbon::createFromTimestamp($this->config->expiresAt());
+        } catch(AuthNotDefinedException | AuthInternalNotDefinedException $e) {
+            self::$accessToken = self::$accessToken ?? null;
+            self::$refreshToken = self::$refreshToken ?? null;
+            self::$expiresAt = self::$expiresAt ?? null;
+        }
 
     }
 
