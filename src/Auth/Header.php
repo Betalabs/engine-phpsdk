@@ -20,10 +20,11 @@ class Header
      * Build header array with authenticate if required
      *
      * @return array
+     * @throws \Betalabs\Engine\Auth\Exceptions\TokenExpiredException
+     * @throws \Betalabs\Engine\Auth\Exceptions\UnauthorizedException
      */
     public function header()
     {
-
         if(!$this->mustAuthorize) {
             return [];
         }
@@ -31,7 +32,6 @@ class Header
         return [
             'Authorization' => 'Bearer '. $this->token->retrieveToken()
         ];
-
     }
 
     /**
