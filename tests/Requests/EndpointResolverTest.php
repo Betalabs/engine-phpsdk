@@ -52,7 +52,7 @@ class EndpointResolverTest extends TestCase
 
     }
 
-    public function testEndpointWhenEnvironmentNodeDoesNotExist()
+    public function testEndpointWhenEnvironmentNodeDoesNotExistAndEndpointIsNotInformed()
     {
 
         $environment = \Mockery::mock(Environment::class);
@@ -64,6 +64,23 @@ class EndpointResolverTest extends TestCase
 
         $endpoint = new EndpointResolver($environment);
         $this->assertEquals('http://engine.local', $endpoint->endpoint());
+
+    }
+
+    public function testEndpointWhenEnvironmentNodeDoesNotExistAndEndpointIsInformed()
+    {
+
+        $environment = \Mockery::mock(Environment::class);
+        $environment->shouldReceive('endpoint')
+            ->andThrow(EnvironmentInternalNodeNotDefinedException::class);
+
+        $environment->shouldReceive('environment')
+            ->andThrow(EnvironmentInternalNodeNotDefinedException::class);
+
+        EndpointResolver::setEndpoint('http://new.endpoint');
+
+        $endpoint = new EndpointResolver($environment);
+        $this->assertEquals('http://new.endpoint', $endpoint->endpoint());
 
     }
 
