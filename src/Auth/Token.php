@@ -22,6 +22,9 @@ class Token
     /** @var \DI\Container */
     protected $diContainer;
 
+    /** @var  */
+    protected static $endpoint;
+
     /** @var string */
     protected static $accessToken;
 
@@ -62,10 +65,12 @@ class Token
      * @return string
      * @throws \Betalabs\Engine\Auth\Exceptions\TokenExpiredException
      * @throws \Betalabs\Engine\Auth\Exceptions\UnauthorizedException
+     * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function retrieveToken()
     {
-
         $this->retrieveConfig();
 
         if(is_null(self::$accessToken)) {
@@ -79,17 +84,18 @@ class Token
         }
 
         return self::$accessToken;
-
     }
 
     /**
      * Refresh access token
      *
      * @throws \Betalabs\Engine\Auth\Exceptions\TokenExpiredException
+     * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function refreshToken()
     {
-
         $this->retrieveConfig();
 
         if(is_null(self::$refreshToken)) {
@@ -120,7 +126,6 @@ class Token
             $response->refresh_token,
             Carbon::now()->addSeconds($response->expires_in)
         );
-
     }
 
     /**
@@ -128,7 +133,6 @@ class Token
      */
     protected function retrieveConfig()
     {
-
         try {
             self::$accessToken = $this->config->accessToken();
             self::$refreshToken = $this->config->refreshToken();
@@ -138,7 +142,6 @@ class Token
             self::$refreshToken = self::$refreshToken ?? null;
             self::$expiresAt = self::$expiresAt ?? null;
         }
-
     }
 
     /**
@@ -148,13 +151,11 @@ class Token
      */
     protected function diContainer()
     {
-
         if(is_null($this->diContainer)) {
             $this->diContainer = ContainerBuilder::buildDevContainer();
         }
 
         return $this->diContainer;
-
     }
 
     /**

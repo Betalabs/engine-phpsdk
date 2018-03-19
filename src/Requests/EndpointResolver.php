@@ -8,6 +8,9 @@ use Betalabs\Engine\Configs\Exceptions\EnvironmentInternalNodeNotDefinedExceptio
 class EndpointResolver
 {
 
+    /** @var string */
+    private static $endpoint;
+
     /** @var \Betalabs\Engine\Configs\Environment */
     protected $conf;
 
@@ -27,14 +30,12 @@ class EndpointResolver
      */
     public function endpoint()
     {
-
         try {
             // If an endpoint is defined it will be used
             return $this->conf->endpoint();
         } catch(EnvironmentInternalNodeNotDefinedException $e) {
             return $this->environmentEndpoint();
         }
-
     }
 
     /**
@@ -44,7 +45,6 @@ class EndpointResolver
      */
     protected function environmentEndpoint()
     {
-
         try {
 
             // If environment is Sandbox
@@ -57,12 +57,28 @@ class EndpointResolver
         } catch(EnvironmentInternalNodeNotDefinedException $e) {
             return $this->defaultEndpoint();
         }
-
     }
 
+    /**
+     * Default endpoint
+     *
+     * @return string
+     */
     protected function defaultEndpoint()
     {
+        if(self::$endpoint) {
+            return self::$endpoint;
+        }
+
         return 'http://engine.local';
+    }
+
+    /**
+     * @param string $endpoint
+     */
+    public static function setEndpoint($endpoint)
+    {
+        self::$endpoint = $endpoint;
     }
 
 }
