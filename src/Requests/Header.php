@@ -27,6 +27,8 @@ class Header
      * Define the header array
      *
      * @return array
+     * @throws \Betalabs\Engine\Auth\Exceptions\TokenExpiredException
+     * @throws \Betalabs\Engine\Auth\Exceptions\UnauthorizedException
      */
     public function headers()
     {

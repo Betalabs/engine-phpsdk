@@ -45,7 +45,7 @@ class BootTest extends TestCase
         $this->assertEquals(
             'success',
             $boot->start(
-                $this->mockServerRequest('', '', '')
+                $this->mockServerRequest('', '', '', '')
             )
         );
 
@@ -63,7 +63,7 @@ class BootTest extends TestCase
         $this->assertEquals(
             'success',
             $boot->start(
-                $this->mockServerRequest('token-hash','', '')
+                $this->mockServerRequest('', 'token-hash','', '')
             )
         );
 
@@ -81,7 +81,7 @@ class BootTest extends TestCase
         $this->assertEquals(
             'success',
             $boot->start(
-                $this->mockServerRequest('')
+                $this->mockServerRequest('', '')
             )
         );
 
@@ -99,7 +99,7 @@ class BootTest extends TestCase
 
         $boot = new Boot($routerContainer, $routeProvider, $reserved, $token);
         $boot->start(
-            $this->mockServerRequest('')
+            $this->mockServerRequest('', '')
         );
 
     }
@@ -159,12 +159,18 @@ class BootTest extends TestCase
     }
 
     protected function mockServerRequest(
+        $engineEndpoint = 'http://engine.endpoint',
         $accessToken = 'token-hash',
         $refreshToken = 'refresh-hash',
         $expiresAt = 9999999
     ) {
 
         $serverRequest = \Mockery::mock(ServerRequest::class);
+
+        $serverRequest->shouldReceive('getHeaderLine')
+            ->once()
+            ->with('engine-endpoint')
+            ->andReturn($engineEndpoint);
 
         $serverRequest->shouldReceive('getHeaderLine')
             ->once()

@@ -5,6 +5,7 @@ namespace Betalabs\Engine\Routes;
 use Betalabs\Engine\Configs\RouteProvider;
 use Aura\Router\RouterContainer;
 use Betalabs\Engine\Auth\Token;
+use Betalabs\Engine\Requests\EndpointResolver;
 use Carbon\Carbon;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zend\Diactoros\ServerRequest;
@@ -85,12 +86,12 @@ class Boot
      */
     protected function engineHeaders($request)
     {
-
+        $endpoint = $request->getHeaderLine('engine-endpoint');
         $accessToken = $request->getHeaderLine('engine-access-token');
         $refreshToken = $request->getHeaderLine('engine-refresh-token');
         $expiresAt = $request->getHeaderLine('engine-token-expires-at');
 
-        if(empty($accessToken) || empty($refreshToken) || empty($expiresAt)) {
+        if(empty($endpoint) || empty($accessToken) || empty($refreshToken) || empty($expiresAt)) {
             return;
         }
 
@@ -100,6 +101,7 @@ class Boot
             Carbon::createFromTimestamp($expiresAt)
         );
 
+        EndpointResolver::setEndpoint($endpoint);
     }
 
     /**
