@@ -2,17 +2,18 @@
 
 namespace Betalabs\Engine\Configs;
 
+use Betalabs\Engine\Auth\Credentials;
 use Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException;
 use Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException;
-use Betalabs\Engine\Configs\Exceptions\RouteClassDoesNotExistException;
-use Betalabs\Engine\Configs\Exceptions\FileDoesNotExistException;
-use Betalabs\Engine\Configs\Exceptions\RouteProviderNotDefinedException;
 use DI\ContainerBuilder;
 use DI\Container;
 
 class Client
 {
-
+    /** @var string */
+    public $id;
+    /** @var string */
+    public $secret;
     /** @var \Betalabs\Engine\Configs\Reader */
     protected $reader;
 
@@ -33,10 +34,53 @@ class Client
     }
 
     /**
+     * Search for username property on client node
+     *
+     * @return string
+     * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
+     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
+     * @throws \ReflectionException
+     */
+    public function username()
+    {
+        $client = $this->clientNode();
+
+        if(isset($client->username)) {
+            return (string) $client->username;
+        }
+
+        throw new PropertyNotFoundException('Property username of client node not found');
+    }
+
+    /**
+     * Search for password property on client node
+     *
+     * @return string
+     * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
+     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
+     * @throws \ReflectionException
+     */
+    public function password()
+    {
+        $client = $this->clientNode();
+
+        if(isset($client->password)) {
+            return (string) $client->password;
+        }
+
+        throw new PropertyNotFoundException('Property password of client node not found');
+    }
+
+    /**
      * Search for id property on client node
      *
      * @return string
+     * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
+     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
      * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
+     * @throws \ReflectionException
      */
     public function id()
     {
@@ -55,7 +99,10 @@ class Client
      * Search for secret property on client node
      *
      * @return string
+     * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
+     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
      * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
+     * @throws \ReflectionException
      */
     public function secret()
     {
@@ -73,11 +120,16 @@ class Client
     /**
      * Search for client node in configuration file
      *
-     * @return \SimpleXMLElement[]
+     * @return mixed
      * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
+     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @throws \ReflectionException
      */
     protected function clientNode()
     {
+        if (Credentials::isValid()) {
+            return Credentials::retrieve();
+        }
 
         if(isset($this->reader->load()->client)) {
             return $this->reader->load()->client;

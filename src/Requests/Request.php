@@ -27,6 +27,8 @@ class Request
      * Build a GET request
      *
      * @return \Betalabs\Engine\Requests\Methods\Get
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function get()
     {
@@ -37,6 +39,8 @@ class Request
      * Build a POST request
      *
      * @return \Betalabs\Engine\Requests\Methods\Post
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function post()
     {
@@ -47,6 +51,8 @@ class Request
      * Build a PUT request
      *
      * @return \Betalabs\Engine\Requests\Methods\Put
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function put()
     {
@@ -57,6 +63,8 @@ class Request
      * Build a PATCH request
      *
      * @return \Betalabs\Engine\Requests\Methods\Patch
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function patch()
     {
@@ -67,6 +75,8 @@ class Request
      * Build a DELETE request
      *
      * @return \Betalabs\Engine\Requests\Methods\Delete
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function delete()
     {

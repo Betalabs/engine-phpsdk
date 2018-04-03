@@ -48,7 +48,7 @@ abstract class Request
      * Build URI
      *
      * @param string $path
-     * @param bool $withApiPrefix
+     *
      * @return string
      */
     public function uri($path)
@@ -64,7 +64,13 @@ abstract class Request
      * Build the options for Guzzle based on given data
      *
      * @param array $data
+     *
      * @return array
+     * @throws \Betalabs\Engine\Auth\Exceptions\TokenExpiredException
+     * @throws \Betalabs\Engine\Auth\Exceptions\UnauthorizedException
+     * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     protected function buildOptions($data = null)
     {

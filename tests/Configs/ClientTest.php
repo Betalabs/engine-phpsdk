@@ -2,6 +2,7 @@
 
 namespace Betalabs\Engine\Tests\Configs;
 
+use Betalabs\Engine\Auth\Credentials;
 use Betalabs\Engine\Configs\Client;
 use Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException;
 use Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException;
