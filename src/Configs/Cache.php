@@ -4,26 +4,18 @@
 namespace Betalabs\Engine\Configs;
 
 
-use Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException;
-use Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException;
-
 class Cache extends AbstractProvider
 {
 
     /**
      * Return driver
      *
-     * @return string
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @return string|null
      */
     public function driver()
     {
         if (!isset($this->cacheNode()->driver)) {
-            throw new AuthInternalNotDefinedException(
-                'driver does not exist in configuration file'
-            );
+            return null;
         }
 
         return $this->cacheNode()->driver;
@@ -32,17 +24,12 @@ class Cache extends AbstractProvider
     /**
      * Return host
      *
-     * @return string
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @return string|null
      */
     public function host()
     {
         if (!isset($this->cacheNode()->host)) {
-            throw new AuthInternalNotDefinedException(
-                'host does not exist in configuration file'
-            );
+            return null;
         }
 
         return $this->cacheNode()->host;
@@ -51,17 +38,12 @@ class Cache extends AbstractProvider
     /**
      * Return port
      *
-     * @return string
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @return string|null
      */
     public function port()
     {
         if (!isset($this->cacheNode()->port)) {
-            throw new AuthInternalNotDefinedException(
-                'port does not exist in configuration file'
-            );
+            return null;
         }
 
         return $this->cacheNode()->port;
@@ -70,17 +52,12 @@ class Cache extends AbstractProvider
     /**
      * Return password
      *
-     * @return string
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @return string|null
      */
     public function password()
     {
         if (!isset($this->cacheNode()->password)) {
-            throw new AuthInternalNotDefinedException(
-                'password does not exist in configuration file'
-            );
+            return null;
         }
 
         return $this->cacheNode()->password;
@@ -89,16 +66,12 @@ class Cache extends AbstractProvider
     /**
      * Catch cache node
      *
-     * @return \SimpleXMLElement
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @return \SimpleXMLElement|null
      */
     protected function cacheNode()
     {
         if (!isset($this->reader->load()->cache)) {
-            throw new AuthNotDefinedException(
-                'cache node does not exist in configuration file'
-            );
+            return null;
         }
 
         return $this->reader->load()->cache;

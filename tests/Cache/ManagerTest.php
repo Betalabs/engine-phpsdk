@@ -66,7 +66,10 @@ class ManagerTest extends TestCase
 
         $this->assertEquals('accessToken', $cached->accessToken);
         $this->assertEquals('refreshToken', $cached->refreshToken);
-        $this->assertEquals(Carbon::now()->addMinute(), $cached->expiresAt);
+        $this->assertEquals(
+            Carbon::now()->addMinute()->timestamp,
+            $cached->expiresAt
+        );
     }
 
     public function testCanDeleteCache()
@@ -99,5 +102,12 @@ class ManagerTest extends TestCase
             ->method('password')
             ->willReturn('');
         return $cacheConfig;
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        Credentials::clear();
     }
 }

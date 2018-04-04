@@ -10,10 +10,6 @@ use DI\Container;
 
 class Client
 {
-    /** @var string */
-    public $id;
-    /** @var string */
-    public $secret;
     /** @var \Betalabs\Engine\Configs\Reader */
     protected $reader;
 
@@ -38,7 +34,6 @@ class Client
      *
      * @return string
      * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
      * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
      * @throws \ReflectionException
      */
@@ -58,7 +53,6 @@ class Client
      *
      * @return string
      * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
      * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
      * @throws \ReflectionException
      */
@@ -78,7 +72,6 @@ class Client
      *
      * @return string
      * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
      * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
      * @throws \ReflectionException
      */
@@ -100,7 +93,6 @@ class Client
      *
      * @return string
      * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
      * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
      * @throws \ReflectionException
      */
@@ -122,7 +114,6 @@ class Client
      *
      * @return mixed
      * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
      * @throws \ReflectionException
      */
     protected function clientNode()

@@ -89,7 +89,7 @@ class Token
     {
         $this->retrieveConfig();
 
-        if (is_null(self::$accessToken)) {
+        if(is_null(self::$accessToken)) {
             if (!Credentials::isValid()) {
                 throw new UnauthorizedException(
                     'Token not informed. Impossible to authenticate'
@@ -99,7 +99,7 @@ class Token
             $this->retrieveTokenByClientCredentials();
         }
 
-        if (Carbon::now()->subSeconds(15) > self::$expiresAt) {
+        if(Carbon::now()->subSeconds(15) > self::$expiresAt) {
             $this->refreshToken();
         }
 
@@ -122,7 +122,7 @@ class Token
     {
         $this->retrieveConfig();
 
-        if (is_null(self::$refreshToken)) {
+        if(is_null(self::$refreshToken)) {
             throw new TokenExpiredException(
                 'Token expired and there is no refresh token available'
             );
@@ -194,7 +194,7 @@ class Token
      */
     protected function diContainer()
     {
-        if (is_null($this->diContainer)) {
+        if(is_null($this->diContainer)) {
             $this->diContainer = ContainerBuilder::buildDevContainer();
         }
 

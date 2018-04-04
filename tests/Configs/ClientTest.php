@@ -2,7 +2,6 @@
 
 namespace Betalabs\Engine\Tests\Configs;
 
-use Betalabs\Engine\Auth\Credentials;
 use Betalabs\Engine\Configs\Client;
 use Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException;
 use Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException;
@@ -72,6 +71,48 @@ class ClientTest extends TestCase
         $client = new Client($reader, $helper, $container);
 
         $client->secret();
+
+    }
+
+    public function testExceptionIsThrownWhenUsernamePropertyDoesNotExist()
+    {
+
+        $this->expectException(PropertyNotFoundException::class);
+
+        $reader = \Mockery::mock(Reader::class);
+        $reader->shouldReceive('load')
+            ->andReturn((object) [
+                'client' => (object) []
+            ]);
+
+        $helper = \Mockery::mock(Helper::class);
+
+        $container = \Mockery::mock(Container::class);
+
+        $client = new Client($reader, $helper, $container);
+
+        $client->username();
+
+    }
+
+    public function testExceptionIsThrownWhenPasswordPropertyDoesNotExist()
+    {
+
+        $this->expectException(PropertyNotFoundException::class);
+
+        $reader = \Mockery::mock(Reader::class);
+        $reader->shouldReceive('load')
+            ->andReturn((object) [
+                'client' => (object) []
+            ]);
+
+        $helper = \Mockery::mock(Helper::class);
+
+        $container = \Mockery::mock(Container::class);
+
+        $client = new Client($reader, $helper, $container);
+
+        $client->password();
 
     }
 
