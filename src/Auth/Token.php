@@ -4,11 +4,11 @@ namespace Betalabs\Engine\Auth;
 
 use Betalabs\Engine\Auth\Exceptions\TokenExpiredException;
 use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
+use Betalabs\Engine\Cache\Manager;
 use Betalabs\Engine\Configs\Auth;
 use Betalabs\Engine\Configs\Client;
 use Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException;
 use Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException;
-use Betalabs\Engine\Database\Connection;
 use Betalabs\Engine\Requests\Methods\Post;
 use Carbon\Carbon;
 use DI\Container;
@@ -35,15 +35,22 @@ class Token
 
     /** @var \Carbon\Carbon */
     protected static $expiresAt;
+    /**
+     * @var \Betalabs\Engine\Cache\Manager
+     */
+    private $cacheManager;
 
     /**
      * Token constructor.
      *
      * @param \Betalabs\Engine\Configs\Auth $config
+     * @param \Betalabs\Engine\Cache\Manager $cacheManager
+     *
      */
-    public function __construct(Auth $config)
+    public function __construct(Auth $config, Manager $cacheManager)
     {
         $this->config = $config;
+        $this->cacheManager = $cacheManager;
     }
 
     /**
@@ -60,8 +67,8 @@ class Token
         self::$accessToken = $accessToken;
         self::$refreshToken = $refreshToken;
         self::$expiresAt = $expiresAt;
+        $this->cacheManager->insert();
 
-        $this->updateDatabaseTokens();
         return $this;
     }
 
@@ -116,7 +123,9 @@ class Token
         $this->retrieveConfig();
 
         if (is_null(self::$refreshToken)) {
-            throw new TokenExpiredException('Token expired and there is no refresh token available');
+            throw new TokenExpiredException(
+                'Token expired and there is no refresh token available'
+            );
         }
 
         $container = $this->diContainer();
@@ -162,23 +171,15 @@ class Token
     protected function retrieveConfig()
     {
         try {
-            if (Credentials::isValid()) {
-                $token = new \Betalabs\Engine\Database\Token();
-                $tokenDB = $token->first();
-
-                if ($tokenDB) {
-                    self::$accessToken = $tokenDB->access_token;
-                    self::$refreshToken = $tokenDB->refresh_token;
-                    self::$expiresAt = Carbon::createFromTimestamp(
-                        $tokenDB->expires_at
-                    );
-                    return;
-                }
+            if ($this->retrieveFromCache()) {
+                return;
             }
 
             self::$accessToken = $this->config->accessToken();
             self::$refreshToken = $this->config->refreshToken();
-            self::$expiresAt = Carbon::createFromTimestamp((string)$this->config->expiresAt());
+            self::$expiresAt = Carbon::createFromTimestamp(
+                (string)$this->config->expiresAt()
+            );
         } catch (AuthNotDefinedException | AuthInternalNotDefinedException $e) {
             self::$accessToken = self::$accessToken ?? null;
             self::$refreshToken = self::$refreshToken ?? null;
@@ -198,26 +199,6 @@ class Token
         }
 
         return $this->diContainer;
-    }
-
-    /**
-     * Update or insert a new token on table
-     */
-    public function updateDatabaseTokens()
-    {
-        $conn = Connection::get();
-
-        try {
-            $conn->beginTransaction();
-
-            $token = new \Betalabs\Engine\Database\Token();
-            $token->delete();
-            $token->insert();
-
-            $conn->commit();
-        } catch (\Exception $e) {
-            $conn->rollBack();
-        }
     }
 
     /**
@@ -305,6 +286,30 @@ class Token
                 'Impossible to authenticate', $e->getCode(), $e
             );
         }
+    }
+
+    /**
+     * Retrieve and set tokens from cache.
+     *
+     * @return bool
+     */
+    private function retrieveFromCache()
+    {
+        if (Credentials::isValid()) {
+            $cachedTokens = $this->cacheManager->retrieve();
+
+            if ($cachedTokens) {
+                self::$accessToken = $cachedTokens->accessToken;
+                self::$refreshToken = $cachedTokens->refreshToken;
+                self::$expiresAt = Carbon::createFromTimestamp(
+                    $cachedTokens->expiresAt
+                );
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

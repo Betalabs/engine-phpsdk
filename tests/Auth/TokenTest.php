@@ -6,7 +6,10 @@ use Betalabs\Engine\Auth\Credentials;
 use Betalabs\Engine\Auth\Exceptions\TokenExpiredException;
 use Betalabs\Engine\Auth\Exceptions\UnauthorizedException;
 use Betalabs\Engine\Auth\Token;
+use Betalabs\Engine\Cache\Factory;
+use Betalabs\Engine\Cache\Manager;
 use Betalabs\Engine\Configs\Auth;
+use Betalabs\Engine\Configs\Cache;
 use Betalabs\Engine\Configs\Client;
 use Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException;
 use Betalabs\Engine\Requests\Methods\Post;
@@ -19,18 +22,6 @@ use GuzzleHttp\Psr7\Response;
 
 class TokenTest extends TestCase
 {
-    /**
-     * @var \Betalabs\Engine\Database\Token
-     */
-    private $tokenModel;
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->tokenModel = new \Betalabs\Engine\Database\Token();
-    }
-
     public function testExceptionWhenNoTokenIsInformed()
     {
 
@@ -40,7 +31,9 @@ class TokenTest extends TestCase
         $auth->shouldReceive('accessToken')
             ->andThrow(AuthInternalNotDefinedException::class);
 
-        $token = new Token($auth);
+        $cacheConfig = $this->mockCacheConfig();
+        $manager = new Manager(new Factory($cacheConfig));
+        $token = new Token($auth, $manager);
 
         $token->retrieveToken();
 
@@ -55,7 +48,9 @@ class TokenTest extends TestCase
         $auth->shouldReceive('accessToken')
             ->andThrow(AuthInternalNotDefinedException::class);
 
-        $token = new Token($auth);
+        $cacheConfig = $this->mockCacheConfig();
+        $manager = new Manager(new Factory($cacheConfig));
+        $token = new Token($auth, $manager);
 
         $accessToken = 'access-token-hash';
 
@@ -79,7 +74,9 @@ class TokenTest extends TestCase
         $auth->shouldReceive('accessToken')
             ->andThrow(AuthInternalNotDefinedException::class);
 
-        $token = new Token($auth);
+        $cacheConfig = $this->mockCacheConfig();
+        $manager = new Manager(new Factory($cacheConfig));
+        $token = new Token($auth, $manager);
 
         $token->informToken('bearer-token-hash', null, Carbon::now()->subMinute());
 
@@ -106,7 +103,9 @@ class TokenTest extends TestCase
         $auth->shouldReceive('accessToken')
             ->andThrow(AuthInternalNotDefinedException::class);
 
-        $token = new Token($auth);
+        $cacheConfig = $this->mockCacheConfig();
+        $manager = new Manager(new Factory($cacheConfig));
+        $token = new Token($auth, $manager);
         $token->setDiContainer($container);
 
         $token->informToken('access-token-hash', 'refresh-token', Carbon::now()->subMinute());
@@ -145,7 +144,9 @@ class TokenTest extends TestCase
         $auth->shouldReceive('expiresAt')
             ->andReturn(Carbon::now()->addMinute()->timestamp);
 
-        $token = new Token($auth);
+        $cacheConfig = $this->mockCacheConfig();
+        $manager = new Manager(new Factory($cacheConfig));
+        $token = new Token($auth, $manager);
 
         $token->informToken('access-token-hash', 'refresh-token', Carbon::now()->addMinute());
 
@@ -208,12 +209,33 @@ class TokenTest extends TestCase
         return $client;
     }
 
+    private function mockCacheConfig()
+    {
+        $cacheConfig = $this->getMockBuilder(Cache::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['driver', 'host', 'port', 'password'])
+            ->getMock();
+        $cacheConfig->expects($this->atMost(1))
+            ->method('driver')
+            ->willReturn('filesystem');
+        $cacheConfig->expects($this->never())
+            ->method('host')
+            ->willReturn('localhost');
+        $cacheConfig->expects($this->never())
+            ->method('port')
+            ->willReturn('1234');
+        $cacheConfig->expects($this->never())
+            ->method('password')
+            ->willReturn('');
+        return $cacheConfig;
+    }
+
     public function testRetrieveNewTokenWithDefinedCredentials()
     {
         Carbon::setTestNow();
 
         Credentials::$apiUri = 'engine.local';
-        Credentials::$identifier = time();
+        Credentials::$identifier = (string)time();
         Credentials::$username = 'token-test';
         Credentials::$password = 'test-token';
         Credentials::$id = 1;
@@ -255,23 +277,25 @@ class TokenTest extends TestCase
         $auth->shouldReceive('accessToken')
             ->andThrow(AuthInternalNotDefinedException::class);
 
-        $token = new Token($auth);
+        $cacheConfig = $this->mockCacheConfig();
+        $manager = new Manager(new Factory($cacheConfig));
+        $token = new Token($auth, $manager);
         $token->setDiContainer($container);
 
         $accessToken = $token->retrieveToken();
-        $tokens = $this->tokenModel->first();
+        $tokens = $manager->retrieve();
 
         $this->assertEquals('new-access-token', $accessToken);
-        $this->assertEquals('new-access-token', $tokens->access_token);
+        $this->assertEquals('new-access-token', $tokens->accessToken);
         $token->clearToken();
     }
 
-    public function testTokenWithDefinedCredentialsShouldFillDatabase()
+    public function testTokenWithDefinedCredentialsShouldFillCache()
     {
         Carbon::setTestNow();
 
         Credentials::$apiUri = 'engine.local';
-        Credentials::$identifier = time();
+        Credentials::$identifier = (string)time();
         Credentials::$username = 'token-test';
         Credentials::$password = 'test-token';
         Credentials::$id = 1;
@@ -281,13 +305,15 @@ class TokenTest extends TestCase
         $refreshToken = 'refresh-token';
 
         $auth = \Mockery::mock(Auth::class);
-        $token = new Token($auth);
+        $cacheConfig = $this->mockCacheConfig();
+        $manager = new Manager(new Factory($cacheConfig));
+        $token = new Token($auth, $manager);
         $token->informToken($accessToken, $refreshToken, Carbon::now()->addMinute());
 
-        $tokens = $this->tokenModel->first();
+        $tokens = $manager->retrieve();
 
         $this->assertEquals($accessToken, $token->retrieveToken());
-        $this->assertEquals($accessToken, $tokens->access_token);
+        $this->assertEquals($accessToken, $tokens->accessToken);
         $token->clearToken();
     }
 
@@ -296,7 +322,7 @@ class TokenTest extends TestCase
         Carbon::setTestNow();
 
         Credentials::$apiUri = 'engine.local';
-        Credentials::$identifier = time();
+        Credentials::$identifier = (string)time();
         Credentials::$username = 'token-test';
         Credentials::$password = 'test-token';
         Credentials::$id = 1;
@@ -315,16 +341,17 @@ class TokenTest extends TestCase
             ->andReturn($this->mockClient());
 
         $auth = \Mockery::mock(Auth::class);
-
-        $token = new Token($auth);
+        $cacheConfig = $this->mockCacheConfig();
+        $manager = new Manager(new Factory($cacheConfig));
+        $token = new Token($auth, $manager);
         $token->setDiContainer($container);
         $token->informToken($accessToken, $refreshToken, new Carbon('last week'));
 
         $newAccessToken = $token->retrieveToken();
-        $tokens = $this->tokenModel->first();
+        $tokens = $manager->retrieve();
 
         $this->assertEquals('new-access-token', $newAccessToken);
-        $this->assertEquals('new-access-token', $tokens->access_token);
+        $this->assertEquals('new-access-token', $tokens->accessToken);
         $token->clearToken();
     }
 
@@ -333,7 +360,7 @@ class TokenTest extends TestCase
         Carbon::setTestNow();
 
         Credentials::$apiUri = 'engine.local';
-        Credentials::$identifier = time();
+        Credentials::$identifier = (string)time();
         Credentials::$username = 'token-test';
         Credentials::$password = 'test-token';
         Credentials::$id = 1;
@@ -378,8 +405,9 @@ class TokenTest extends TestCase
             ->andReturn($this->mockClient());
 
         $auth = \Mockery::mock(Auth::class);
-
-        $token = new Token($auth);
+        $cacheConfig = $this->mockCacheConfig();
+        $manager = new Manager(new Factory($cacheConfig));
+        $token = new Token($auth, $manager);
         $token->informToken(
             'refresh-test-access-token',
             'refresh-test-refresh-token',
@@ -389,10 +417,10 @@ class TokenTest extends TestCase
         $token->clearToken();
 
         $newAccessToken = $token->retrieveToken();
-        $tokens = $this->tokenModel->first();
+        $tokens = $manager->retrieve();
 
         $this->assertEquals('new-access-token', $newAccessToken);
-        $this->assertEquals('new-access-token', $tokens->access_token);
+        $this->assertEquals('new-access-token', $tokens->accessToken);
     }
 
     public function tearDown()
