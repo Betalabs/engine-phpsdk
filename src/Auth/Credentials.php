@@ -60,7 +60,7 @@ class Credentials
     }
 
     /**
-     * Returns object copy of Credentials class
+     * Return object copy of Credentials class
      *
      * @throws \ReflectionException
      */
