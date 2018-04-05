@@ -30,9 +30,7 @@ class Factory
     /**
      * Return a cache service instance.
      *
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @return \Symfony\Component\Cache\Simple\AbstractCache
      */
     public function create(): AbstractCache
     {

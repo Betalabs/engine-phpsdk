@@ -5,6 +5,7 @@ namespace Betalabs\Engine\Cache\Services;
 
 
 use Betalabs\Engine\Configs\Cache;
+use Predis\Client;
 
 class Redis
 {
@@ -30,19 +31,16 @@ class Redis
     /**
      * Return a Redis client
      *
-     * @return \Redis
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
+     * @return \Predis\Client
      */
-    public static function get(): \Redis
+    public static function get(): Client
     {
         if (self::$conn === null) {
-            $redis = new \Redis();
-            $redis->connect(
-                self::$cacheConfig->host(),
-                self::$cacheConfig->port()
-            );
+            $redis = new Client([
+                'host' => self::$cacheConfig->host(),
+                'port' => self::$cacheConfig->port(),
+                'password' => self::$cacheConfig->password()
+            ]);
 
             self::$conn = $redis;
         }
