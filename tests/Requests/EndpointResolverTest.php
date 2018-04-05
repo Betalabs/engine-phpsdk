@@ -2,6 +2,7 @@
 
 namespace Betalabs\Engine\Tests\Requests;
 
+use Betalabs\Engine\Auth\Credentials;
 use Betalabs\Engine\Configs\Environment;
 use Betalabs\Engine\Configs\Exceptions\EnvironmentInternalNodeNotDefinedException;
 use Betalabs\Engine\Requests\EndpointResolver;
@@ -84,4 +85,26 @@ class EndpointResolverTest extends TestCase
 
     }
 
+    public function testEndpointProvidedByCredentials()
+    {
+        Credentials::$identifier = 'Engine-PhpSDK';
+        Credentials::$username = 'teste@teste.com';
+        Credentials::$password = '123456';
+        Credentials::$apiUri = 'http://php-sdk.engine';
+        Credentials::$id = 1;
+        Credentials::$secret = '123abc';
+
+        $environment = \Mockery::mock(Environment::class);
+
+        $endpoint = new EndpointResolver($environment);
+
+        $this->assertEquals('http://php-sdk.engine', $endpoint->endpoint());
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        Credentials::clear();
+    }
 }

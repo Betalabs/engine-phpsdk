@@ -2,6 +2,7 @@
 
 namespace Betalabs\Engine\Requests;
 
+use Betalabs\Engine\Auth\Credentials;
 use Betalabs\Engine\Configs\Environment;
 use Betalabs\Engine\Configs\Exceptions\EnvironmentInternalNodeNotDefinedException;
 
@@ -31,6 +32,11 @@ class EndpointResolver
     public function endpoint()
     {
         try {
+            // If credentials is setted it will be used
+            if (Credentials::isValid()) {
+                return Credentials::$apiUri;
+            }
+
             // If an endpoint is defined it will be used
             return $this->conf->endpoint();
         } catch(EnvironmentInternalNodeNotDefinedException $e) {
