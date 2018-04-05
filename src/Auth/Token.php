@@ -178,7 +178,7 @@ class Token
             self::$accessToken = $this->config->accessToken();
             self::$refreshToken = $this->config->refreshToken();
             self::$expiresAt = Carbon::createFromTimestamp(
-                (string)$this->config->expiresAt()
+                (int)$this->config->expiresAt()
             );
         } catch (AuthNotDefinedException | AuthInternalNotDefinedException $e) {
             self::$accessToken = self::$accessToken ?? null;
