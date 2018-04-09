@@ -70,10 +70,10 @@ class Cache extends AbstractProvider
      */
     protected function cacheNode()
     {
-        if (!isset($this->reader->load()->cache)) {
+        try {
+            return $this->reader->load()->cache;
+        } catch (\Exception $e) {
             return null;
         }
-
-        return $this->reader->load()->cache;
     }
 }
