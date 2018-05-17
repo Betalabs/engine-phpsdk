@@ -276,4 +276,4 @@ You might want to use a specific token to access Engine API. This can be done th
 
 - `accessToken` is the access token string to be used in all requests
 
-The `auth` node is not required, however to be used `accessToken` subnode must be declared.
+The `auth` node is not required, however to be used `accessToken` subnode, it must be declared.
