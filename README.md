@@ -1,7 +1,7 @@
 # Engine-PhpSDK
 
 <p align="center">
-<img src="https://app.buddy.works/betalabs/engine-phpsdk/pipelines/pipeline/59763/badge.svg?token=7694a41867a494d5be5dd61a675f7e43fc18c053ab9c6091a392ce111cd03de5" alt="Buddy Status"/>
+<img src="https://app.buddy.works/betalabs/engine-phpsdk/pipelines/pipeline/59764/badge.svg?token=7694a41867a494d5be5dd61a675f7e43fc18c053ab9c6091a392ce111cd03de5" alt="Buddy Status"/>
 </p>
 
 This package is a helper to integrate with Engine. The documentation for integration can be found <a href="https://betalabs.atlassian.net/wiki/spaces/APPS/overview" target="_blank">here</a>.
@@ -71,17 +71,11 @@ This is its basic format:
 <engine-sdk>
     <auth>
         <accessToken></accessToken>
-        <refreshToken></refreshToken>
-        <expiresAt></expiresAt>
     </auth>
     <environment>
         <env></env>
         <endpoint></endpoint>
     </environment>
-    <client>
-        <id></id>
-        <secret></secret>
-    </client>
     <routeProvider>
         <path></path>
         <class></class>
@@ -142,21 +136,6 @@ By default all requests are authenticated using stored token. It is possible to 
 ```
 
 Of course is possible to enable using the `mustAuthorize()` method.
-
-All requests dispatched by Engine owns three headers: `Engine-Access-Token`, `Engine-Refresh-Token` and `Engine-Token-Expires-At`. All data are automatically stored by Routes and used in all requests to Engine.
-
-If the token is expired and refresh token exists then an attempt to refresh the token is made. An `Betalabs\Engine\Auth\Exceptions\TokenExpiredException` is thrown otherwise.
-
-In order to be able to refresh token the client ID and secret must be informed in configuration file. These configurations are in `<client>` node:
-
-```xml
-<client>
-    <id></id>
-    <secret></secret>
-</client>
-```
-
-This information are provided by Engine after registering the App.
 
 ## Permissions
 
@@ -292,13 +271,9 @@ You might want to use a specific token to access Engine API. This can be done th
 ```xml
 <auth>
     <accessToken></accessToken>
-    <refreshToken></refreshToken>
-    <expiresAt></expiresAt>
 </auth>
 ```
 
 - `accessToken` is the access token string to be used in all requests
-- `refreshToken` is the refresh token string to be used if access token expires
-- `expiresAt` is the timestamp integer of when the access token expires
 
-The `auth` node is not required, however to be used all subnodes (`accessToken`, `refreshToken`, `expiresAt`) must be declared.
+The `auth` node is not required, however to be used `accessToken` subnode must be declared.

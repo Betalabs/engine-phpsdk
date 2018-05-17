@@ -18,51 +18,13 @@ class Auth extends AbstractProvider
      */
     public function accessToken()
     {
-        if(!isset($this->environmentNode()->accessToken)) {
+        if (!isset($this->environmentNode()->accessToken)) {
             throw new AuthInternalNotDefinedException(
                 'accessToken does not exist in configuration file'
             );
         }
 
         return $this->environmentNode()->accessToken;
-    }
-
-    /**
-     * Return refreshToken
-     *
-     * @return string
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
-     */
-    public function refreshToken()
-    {
-        if(!isset($this->environmentNode()->refreshToken)) {
-            throw new AuthInternalNotDefinedException(
-                'refreshToken does not exist in configuration file'
-            );
-        }
-
-        return $this->environmentNode()->refreshToken;
-    }
-
-    /**
-     * Return expiresAt for accessToken
-     *
-     * @return int
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthInternalNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\AuthNotDefinedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
-     */
-    public function expiresAt()
-    {
-        if(!isset($this->environmentNode()->expiresAt)) {
-            throw new AuthInternalNotDefinedException(
-                'expiresAt does not exist in configuration file'
-            );
-        }
-
-        return $this->environmentNode()->expiresAt;
     }
 
     /**
@@ -74,7 +36,7 @@ class Auth extends AbstractProvider
      */
     protected function environmentNode()
     {
-        if(!isset($this->reader->load()->auth)) {
+        if (!isset($this->reader->load()->auth)) {
             throw new AuthNotDefinedException(
                 'auth node does not exist in configuration file'
             );
