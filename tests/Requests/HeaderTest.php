@@ -56,6 +56,7 @@ class HeaderTest extends TestCase
         $this->assertEquals(
             [
                 'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
                 'Authorization' => 'Bearer hash'
             ],
             $header->headers()
