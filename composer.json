@@ -6,7 +6,7 @@
     "php": "^7.1",
     "php-http/guzzle6-adapter": "^1.0",
     "php-di/php-di": "^5.4",
-    "nesbot/carbon": "^1.22",
+    "nesbot/carbon": "^2.26",
     "aura/router": "^3.1",
     "zendframework/zend-diactoros": "^1.6",
     "symfony/cache": "^4.0",
