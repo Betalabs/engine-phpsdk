@@ -8,7 +8,7 @@
     "php-di/php-di": "^5.4",
     "nesbot/carbon": "^2.26",
     "aura/router": "^3.1",
-    "zendframework/zend-diactoros": "^1.6",
+    "zendframework/zend-diactoros": "^1.6|^2.0",
     "symfony/cache": "^4.0",
     "symfony/http-kernel": "^4.0",
     "predis/predis": "^1.1"
