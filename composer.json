@@ -10,7 +10,7 @@
     "aura/router": "^3.1",
     "zendframework/zend-diactoros": "^1.6|^2.0",
     "symfony/cache": "4.2.*",
-    "symfony/http-kernel": "^4.0",
+    "symfony/http-kernel": "4.2.*",
     "predis/predis": "^1.1"
   },
   "require-dev": {
