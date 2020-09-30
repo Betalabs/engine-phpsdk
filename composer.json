@@ -3,7 +3,7 @@
   "description": "SDK for Engine",
   "authors": [],
   "require": {
-    "php": "^7.1",
+    "php": "^7.2.5",
     "php-di/php-di": "^5.4|^6.0",
     "nesbot/carbon": "^2.26",
     "aura/router": "^3.1",
