@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdb8bd8755644986166f37f9eab173ad",
+    "content-hash": "9469b2ef2814a95aa0c262822ae52a9c",
     "packages": [
         {
             "name": "aura/router",
@@ -579,16 +579,16 @@
         },
         {
             "name": "php-di/php-di",
-            "version": "6.2.3",
+            "version": "6.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-DI/PHP-DI.git",
-                "reference": "63c444646f5f41d84818af1c780abed8ebcc082c"
+                "reference": "96a9ddb0c5d790d120c3332821be09d9bc9db288"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/63c444646f5f41d84818af1c780abed8ebcc082c",
-                "reference": "63c444646f5f41d84818af1c780abed8ebcc082c",
+                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/96a9ddb0c5d790d120c3332821be09d9bc9db288",
+                "reference": "96a9ddb0c5d790d120c3332821be09d9bc9db288",
                 "shasum": ""
             },
             "require": {
@@ -647,7 +647,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-24T12:21:43+00:00"
+            "time": "2020-10-01T11:44:12+00:00"
         },
         {
             "name": "php-di/phpdoc-reader",
@@ -4781,7 +4781,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.2.5"
+        "php": "^7.3"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
