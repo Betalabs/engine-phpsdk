@@ -8,7 +8,7 @@ use Betalabs\Engine\Auth\Token;
 use Betalabs\Engine\Requests\EndpointResolver;
 use Carbon\Carbon;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequest;
 
 class Boot
 {
@@ -47,7 +47,7 @@ class Boot
     /**
      * Start request
      *
-     * @param \Zend\Diactoros\ServerRequest $request
+     * @param \Laminas\Diactoros\ServerRequest $request
      * @return mixed
      */
     public function start(ServerRequest $request)
@@ -82,7 +82,7 @@ class Boot
     /**
      * Search for Engine headers to assign token
      *
-     * @param \Zend\Diactoros\ServerRequest $request
+     * @param \Laminas\Diactoros\ServerRequest $request
      */
     protected function engineHeaders($request)
     {

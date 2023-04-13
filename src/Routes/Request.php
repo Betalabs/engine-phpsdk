@@ -2,7 +2,7 @@
 
 namespace Betalabs\Engine\Routes;
 
-use Zend\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\ServerRequestFactory;
 
 class Request
 {
@@ -10,7 +10,7 @@ class Request
     /**
      * Build request based on GLOBALS
      *
-     * @return \Zend\Diactoros\ServerRequest
+     * @return \Laminas\Diactoros\ServerRequest
      */
     public function buildRequest()
     {
