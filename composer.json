@@ -16,7 +16,7 @@
     "predis/predis": "^1.1",
     "phpdocumentor/reflection-docblock": "^5.1",
     "phpdocumentor/type-resolver": "^1.4.0",
-    "betalabs/guzzle6-adapter": "^4.0",
+    "betalabs/guzzle6-adapter": "^4.0.0",
     "laminas/laminas-diactoros": "^2.25"
   },
   "require-dev": {
