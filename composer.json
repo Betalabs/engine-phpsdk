@@ -9,7 +9,7 @@
     "aura/router": "^3.1",
     "symfony/cache": "^5.1 || ^6.0",
     "symfony/http-kernel": "^5.1 || ^6.0",
-    "symfony/mime": "^5.1",
+    "symfony/mime": "^5.1|| ^6.0",
     "symfony/http-foundation": "^5.1 || ^6.0",
     "symfony/var-dumper": "^5.1 || ^6.0",
     "symfony/var-exporter": "^5.1 || ^6.0",
