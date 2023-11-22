@@ -8,8 +8,10 @@ class ControllerFileGenerator
 {
     public function generate(string $tableName, array $fields)
     {
+
         $className = ucfirst(Str::camel($tableName)) . 'Controller';
-        $model = ucfirst(Str::camel($tableName));
+        $model =  Str::studly(Str::singular($tableName));
+        $entity = Str::studly(($tableName));
 
         $template = <<<EOD
 <?php
@@ -17,14 +19,28 @@ class ControllerFileGenerator
 namespace App\Http\Controllers;
 
 use App\Models\\$model;
+use App\\Structure\\$model as Structure$model;
+use App\\Services\\$entity\\IndexHandler;
 use Illuminate\Http\Request;
 
 class $className extends Controller
 {
-    public function index()
+    /**
+     * @param IndexHandler \$indexHandler
+     */
+    public function index(IndexHandler \$indexHandler)
     {
-        return $model::all();
+        return \$indexHandler->execute();
     }
+    /**
+     * @param Structure$model \$structure
+     * @return Structure$model
+     */
+    public function structure(Structure$model \$structure) : Structure$model
+    {
+        return \$structure;
+    }
+
 
     public function store(Request \$request)
     {

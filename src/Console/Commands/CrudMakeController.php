@@ -7,6 +7,10 @@ use Illuminate\Console\Command;
 use Betalabs\Engine\Supports\MigrationFileGenerator;
 use Betalabs\Engine\Supports\ModelFileGenerator;
 use Betalabs\Engine\Supports\ControllerFileGenerator;
+use Betalabs\Engine\Supports\StructureFileGenerator;
+use Betalabs\Engine\Supports\IndexHandlerFileGenerator;
+use Betalabs\Engine\Supports\ActionMenuFileGenerator;
+
 
 class CrudMakeController extends Command
 {
@@ -16,7 +20,10 @@ class CrudMakeController extends Command
     public function handle(
         MigrationFileGenerator $migrationFileGenerator,
         ModelFileGenerator $modelFileGenerator,
-        ControllerFileGenerator $controllerGenerator
+        ControllerFileGenerator $controllerGenerator,
+        StructureFileGenerator $structureFileGenerator,
+        IndexHandlerFileGenerator $indexHandlerFileGenerator,
+        ActionMenuFileGenerator $actionMenuFileGenerator
     ) : void {
         $this->info('Iniciando comando de criação de arquivos...');
 
@@ -58,6 +65,12 @@ class CrudMakeController extends Command
         $this->info('Model finished');
         $controllerGenerator->generate($tableName, $fields);
         $this->info('Controller finished');
+        $structureFileGenerator->generate($tableName, $fields);
+        $this->info('Structure finished');
+        $indexHandlerFileGenerator->generate($tableName, $fields);
+        $this->info('Index Handler finished');
+        $actionMenuFileGenerator->generate($tableName, $fields);
+        $this->info('Action Menu finished');
 
     }
 
