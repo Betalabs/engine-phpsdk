@@ -2,6 +2,8 @@
 
 namespace Betalabs\Engine\Console\Commands;
 
+use Betalabs\Engine\Supports\ResourceFileGenerator;
+use Betalabs\Engine\Supports\RoutesGenerator;
 use Illuminate\Console\Command;
 
 use Betalabs\Engine\Supports\MigrationFileGenerator;
@@ -23,7 +25,9 @@ class CrudMakeController extends Command
         ControllerFileGenerator $controllerGenerator,
         StructureFileGenerator $structureFileGenerator,
         IndexHandlerFileGenerator $indexHandlerFileGenerator,
-        ActionMenuFileGenerator $actionMenuFileGenerator
+        ActionMenuFileGenerator $actionMenuFileGenerator,
+        ResourceFileGenerator $resourceFileGenerator,
+        RoutesGenerator $routesGenerator
     ) : void {
         $this->info('Iniciando comando de criação de arquivos...');
 
@@ -71,6 +75,14 @@ class CrudMakeController extends Command
         $this->info('Index Handler finished');
         $actionMenuFileGenerator->generate($tableName, $fields);
         $this->info('Action Menu finished');
+//        $actionMenuTestsFileGenerator->generate($tableName, $fields);
+//        $this->info('Action Menu tests finished');
+        $resourceFileGenerator->generate($tableName, $fields);
+        $this->info('Resource file finished');
+        $this->info('Add new routes in api.php...');
+        $routesGenerator->generate($tableName, $fields);
+        $this->info('Add new routes in api.php finished');
+
 
     }
 

@@ -65,7 +65,7 @@ class ActionMenu
     private function single(string \$id$ucfirst)
     {
         return (new $className)
-            ->add(new Update("/$lower/update/{\$id$ucfirst}"))
+            ->add(new Update("/$lower/{\$id$ucfirst}"))
             ->add(new Delete("/$lower/{\$id$ucfirst}"));
     }
 
@@ -248,6 +248,10 @@ class $className extends Structure
 
 EOD;
 
+        if (!is_dir(app_path("Structures/ActionMenu/Action/Menu"))) {
+            // Cria o diretório e também cria os diretórios "pais" necessários, se eles não existirem
+            mkdir(app_path("Structures/ActionMenu/Action/Menu"), 0777, true);
+        }
         file_put_contents(app_path("Structures/ActionMenu/Action/Menu/").$className.'.php', $templateActionMenuMenu);
 
 

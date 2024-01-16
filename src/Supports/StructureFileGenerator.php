@@ -19,10 +19,10 @@ class StructureFileGenerator
         $boxFields = '';
 
         foreach ($fields as [$name, $type]) {
-            $rules .= "new Rule('".$name."', ['".$type."']),\n      ";
-            $columns .= "new Column('".$name."', true, true, true, true, true),\n       ";
-            $labels .= "new Label('".$name."', trans(self::TRANS_PATH . '".$name."')),\n        ";
-            $boxFields .= "'".$name."',\n       ";
+            $rules .= "new Rule('".$name."', ['".$type."']),\n          ";
+            $columns .= "new Column('".$name."', true, true, true, true, true),\n           ";
+            $labels .= "new Label('".$name."', trans(self::TRANS_PATH . '".$name."')),\n            ";
+            $boxFields .= "'".$name."',\n                   ";
         }
 
         $template = <<<EOD

@@ -19,20 +19,25 @@ class ControllerFileGenerator
 namespace App\Http\Controllers;
 
 use App\Models\\$model;
-use App\\Structures\\$tableName as Structure$model;
-use App\\Services\\$entity\\IndexHandler\\$className as IndexHandler;
+use App\\Structures\\$entity as Structure$model;
+use App\\Services\\$entity\\IndexHandler\\$entity as IndexHandler;
+use App\\Services\\$entity\\ActionMenu;
+use App\\Http\\Resources\\$entity as Resource$entity;
 use Illuminate\Http\Request;
 
 class $className extends Controller
 {
     /**
+     * List all records from $tableName
      * @param IndexHandler \$indexHandler
      */
     public function index(IndexHandler \$indexHandler)
     {
         return \$indexHandler->execute();
     }
+    
     /**
+     * Load $tableName structure
      * @param Structure$model \$structure
      * @return Structure$model
      */
@@ -41,18 +46,33 @@ class $className extends Controller
         return \$structure;
     }
 
-
-    public function store(Request \$request)
+    /**
+     * Create a new $tableName record
+     * @param Request \$request
+     * @return $model
+     */
+    public function store(Request \$request) : $model
     {
         return $model::create(\$request->all());
     }
 
-    public function show($model \$id)
+    /**
+     * Show a $tableName record
+     * @param $model \$id
+     * @return $model
+     */
+    public function show($model \$id) : Resource$entity
     {
-        return $model::findOrFail(\$id);
+        return new Resource$entity(\$id);
     }
 
-    public function update(Request \$request, $model \$id)
+    /**
+     * Update a $tableName record
+     * @param Request \$request
+     * @param $model \$id
+     * @return $model
+     */
+    public function update(Request \$request, $model \$id) : $model
     {
         \$record = $model::findOrFail(\$id);
         \$record->fill(\$request->all());
@@ -61,6 +81,11 @@ class $className extends Controller
         return \$record;
     }
 
+    /**
+     * Delete a $tableName record
+     * @param $model \$id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy($model \$id)
     {
         \$record = $model::findOrFail(\$id);
@@ -68,6 +93,31 @@ class $className extends Controller
 
         return response()->json(['message' => 'Registro deletado com sucesso']);
     }
+    
+    
+    /**
+     * @param ActionMenu \$service
+     * @param int \$id
+     * @return EntityCollection
+     */
+    public function singleRecordActionMenu(
+        ActionMenu \$service,
+        int \$id
+    ) : EntityCollection {
+        return \$service->retrieve(\$id);
+    }
+
+    /**
+     * @param ActionMenu \$service
+     * @return EntityCollection
+     */
+    public function multipleRecordsActionMenu(
+        ActionMenu \$service,
+    ) : EntityCollection {
+        return $\service->retrieve();
+    }    
+    
+    
 }
 
 EOD;
