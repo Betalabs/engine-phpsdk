@@ -34,7 +34,7 @@ class CrudMakeController extends Command
         // Loop até que o usuário dê um "comando final"
         while (true) {
             // Pergunte ao usuário por uma entrada
-            $input = $this->ask('Por favor, insira o nome da tabela e o tipo, separado por virgula (Exemplos: "name,string" ou ).
+            $input = $this->ask('Por favor, insira o nome do campo e o tipo, separado por virgula (Exemplos: "name,string" ou ).
             Tipos tratados:
             -> integer
             -> unsignedInteger

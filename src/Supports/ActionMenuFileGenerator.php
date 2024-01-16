@@ -72,8 +72,8 @@ class ActionMenu
 
 EOD;
 
+        file_put_contents($filePath.'/ActionMenu.php', $template);
 
-        file_put_contents($filePath.'/'.$fileName, $template);
         $filePathStructure = app_path("Structures/ActionMenu/Action/{$className}");
         if (!is_dir($filePathStructure)) {
             // Cria o diretório e também cria os diretórios "pais" necessários, se eles não existirem
@@ -233,6 +233,21 @@ EOD;
         file_put_contents($filePathStructure.'/BatchDelete.php', $templateBatchDelete);
 
 
+        $templateActionMenuMenu = <<<EOD
+<?php
+
+namespace App\Structures\ActionMenu\Menu;
+
+use Betalabs\StructureHelper\Structures\ActionMenu\Menu\Structure;
+
+class $className extends Structure
+{
+    
+}
+
+EOD;
+
+        file_put_contents(app_path("Structures/ActionMenu/Action/Menu/").$className.'.php', $templateActionMenuMenu);
 
 
     }

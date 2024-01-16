@@ -16,9 +16,9 @@ class ModelFileGenerator
 
 
         foreach ($fields as [$name, $type]) {
-            $fieldMigrations[] = $name;
+            $fieldMigrations[] = '"'.$name.'"';
         }
-        $fillableFields = implode("\n            ", $fieldMigrations);
+        $fillableFields = implode(",\n     ", $fieldMigrations);
 
 
 
@@ -34,7 +34,7 @@ class $className extends Model
     protected \$table = '$tableName';
 
     protected \$fillable = [
-        '$fillableFields'
+        $fillableFields
     ];
 }
 

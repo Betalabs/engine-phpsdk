@@ -19,8 +19,8 @@ class ControllerFileGenerator
 namespace App\Http\Controllers;
 
 use App\Models\\$model;
-use App\\Structure\\$model as Structure$model;
-use App\\Services\\$entity\\IndexHandler;
+use App\\Structures\\$tableName as Structure$model;
+use App\\Services\\$entity\\IndexHandler\\$className as IndexHandler;
 use Illuminate\Http\Request;
 
 class $className extends Controller
