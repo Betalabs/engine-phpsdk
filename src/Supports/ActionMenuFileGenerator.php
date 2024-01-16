@@ -13,6 +13,7 @@ class ActionMenuFileGenerator
         $modelName = Str::studly(Str::singular($tableName));
         $className = Str::studly($tableName);
         $lower = Str::lower($tableName);
+        $ucfirst = Str::ucfirst($lower);
         $fileName = $className . '.php';
         $filePath = app_path("Services/{$className}");
 
@@ -36,16 +37,16 @@ use Betalabs\\StructureHelper\\Entities\\EntityCollection;
 class ActionMenu
 {
    /**
-     * @param string|null \$Id$lower
+     * @param string|null \$id$ucfirst
      * @return \Betalabs\StructureHelper\Entities\EntityCollection
      */
-    public function retrieve(string \$Id$lower = null): EntityCollection
+    public function retrieve(string \$id$ucfirst = null): EntityCollection
     {
-        if (\$Id$lower === null) {
+        if (\$id$ucfirst === null) {
             return \$this->multiple();
         }
 
-        return \$this->single(\$Id$lower);
+        return \$this->single(\$id$ucfirst);
     }
 
     /**
@@ -58,14 +59,14 @@ class ActionMenu
     }
 
     /**
-     * @param string \$Id$lower
+     * @param string \$id$ucfirst
      * @return \Betalabs\StructureHelper\Entities\EntityCollection
      */
-    private function single(string \$Id$lower)
+    private function single(string \$id$ucfirst)
     {
         return (new $className)
-            ->add(new Update("/$lower/update/{\$Id$lower}"))
-            ->add(new Delete("/$lower/{\$Id$lower}"));
+            ->add(new Update("/$lower/update/{\$id$ucfirst}"))
+            ->add(new Delete("/$lower/{\$id$ucfirst}"));
     }
 
 }
@@ -248,6 +249,54 @@ class $className extends Structure
 EOD;
 
         file_put_contents(app_path("Structures/ActionMenu/Action/Menu/").$className.'.php', $templateActionMenuMenu);
+
+
+        $templateAbstractStructure = <<<EOD
+<?php
+
+namespace App\Structures\ActionMenu\Action;
+
+use Betalabs\LaravelHelper\Helpers\Engine\Wormhole;
+use Betalabs\LaravelHelper\Helpers\Engine\UrlMaker;
+use Betalabs\StructureHelper\Structures\ActionMenu\Action\Structure;
+
+
+abstract class AbstractStructure extends Structure
+{
+    /**
+     * AbstractStructure constructor.
+     *
+     * @param string \$uri
+     */
+    public function __construct(
+        readonly private string \$uri
+    ) { }
+
+    /**
+     * App endpoint
+     *
+     * @return string
+     */
+    public function endpoint(): string
+    {
+        return Wormhole::makeEndpoint(\$this->uri, 'api');
+    }
+
+    /**
+     * Returns the complete endpoint
+     *
+     * @return string
+     */
+    public function completeEndpoint(): string
+    {
+        return UrlMaker::makeUrl(\$this->endpoint());
+    }
+}
+
+
+EOD;
+
+        file_put_contents(app_path("Structures/ActionMenu/Action/").'AbstractStructure.php', $templateAbstractStructure);
 
 
     }
