@@ -7,7 +7,7 @@ use Betalabs\Engine\Requests\Methods\Get;
 use Betalabs\Engine\Requests\Methods\Patch;
 use Betalabs\Engine\Requests\Methods\Post;
 use Betalabs\Engine\Requests\Methods\Put;
-use DI\ContainerBuilder;
+use DI\Container;
 
 class Request
 {
@@ -20,7 +20,7 @@ class Request
      */
     public function __construct()
     {
-        $this->container = ContainerBuilder::buildDevContainer();
+        $this->container = new Container();
     }
 
     /**

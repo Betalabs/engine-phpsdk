@@ -4,7 +4,6 @@ namespace Betalabs\Engine\Configs;
 
 use Betalabs\Engine\Configs\Exceptions\FileDoesNotExistException;
 use DI\Container;
-use DI\ContainerBuilder;
 
 abstract class AbstractProvider
 {
@@ -21,11 +20,11 @@ abstract class AbstractProvider
     public function __construct(
         Reader $reader,
         Helper $helper,
-        Container $container = null
+        ?Container $container = null
     ) {
         $this->reader = $reader;
         $this->helper = $helper;
-        $this->container = $container ?? ContainerBuilder::buildDevContainer();
+        $this->container = $container ?? new Container();
     }
 
     /**

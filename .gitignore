@@ -6,3 +6,4 @@ composer.lock
 /Permission.php
 /Migration.php
 /Genesis.php
+/.phpunit.cache

@@ -144,7 +144,7 @@ abstract class Request
      * @param string|null $endpointSuffix
      * @return Request
      */
-    public function setEndpointSuffix(string $endpointSuffix = null)
+    public function setEndpointSuffix(?string $endpointSuffix = null)
     {
         $this->endpointSuffix = $endpointSuffix;
         return $this;
