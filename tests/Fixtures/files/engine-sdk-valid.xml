@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<engine>
+    <environment>
+        <env>Sandbox</env>
+    </environment>
+    <routeProvider>
+        <class>Betalabs\Engine\Tests\Fixtures\FakeRouteProvider</class>
+    </routeProvider>
+</engine>
