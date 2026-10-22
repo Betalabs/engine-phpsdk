@@ -30,7 +30,6 @@ class Header
      * @return array
      * @throws \Betalabs\Engine\Auth\Exceptions\TokenExpiredException
      * @throws \Betalabs\Engine\Auth\Exceptions\UnauthorizedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
      * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
      * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
      * @throws \DI\DependencyException

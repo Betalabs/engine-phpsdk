@@ -22,9 +22,7 @@ class RequestTest extends TestCase
 
         $endpoint = \Mockery::mock(EndpointResolver::class);
 
-        $request = $this->getMockBuilder(Request::class)
-            ->setConstructorArgs([$client, $header, $endpoint])
-            ->getMockForAbstractClass();
+        $request = $this->concreteRequest($client, $header, $endpoint);
 
         $this->assertEquals(
             $request,
@@ -44,9 +42,7 @@ class RequestTest extends TestCase
 
         $endpoint = \Mockery::mock(EndpointResolver::class);
 
-        $request = $this->getMockBuilder(Request::class)
-            ->setConstructorArgs([$client, $header, $endpoint])
-            ->getMockForAbstractClass();
+        $request = $this->concreteRequest($client, $header, $endpoint);
 
         $this->assertEquals(
             $request,
@@ -65,9 +61,7 @@ class RequestTest extends TestCase
         $endpoint->shouldReceive('endpoint')
             ->andReturn('http://engine.local/');
 
-        $request = $this->getMockBuilder(Request::class)
-            ->setConstructorArgs([$client, $header, $endpoint])
-            ->getMockForAbstractClass();
+        $request = $this->concreteRequest($client, $header, $endpoint);
 
         $this->assertEquals(
             'http://engine.local/api/path/to/api',
@@ -86,9 +80,7 @@ class RequestTest extends TestCase
         $endpoint->shouldReceive('endpoint')
             ->andReturn('http://engine.test/');
 
-        $request = $this->getMockBuilder(Request::class)
-            ->setConstructorArgs([$client, $header, $endpoint])
-            ->getMockForAbstractClass();
+        $request = $this->concreteRequest($client, $header, $endpoint);
 
         $request->setEndpointSuffix('not-api');
 
@@ -109,9 +101,7 @@ class RequestTest extends TestCase
         $endpoint->shouldReceive('endpoint')
             ->andReturn('http://engine.test/');
 
-        $request = $this->getMockBuilder(Request::class)
-            ->setConstructorArgs([$client, $header, $endpoint])
-            ->getMockForAbstractClass();
+        $request = $this->concreteRequest($client, $header, $endpoint);
 
         $request->setEndpointSuffix(null);
 
@@ -120,6 +110,15 @@ class RequestTest extends TestCase
             $request->uri('path/to/api')
         );
 
+    }
+
+    /**
+     * Request is abstract without abstract methods: an empty subclass replaces
+     * getMockForAbstractClass(), removed in PHPUnit 12
+     */
+    protected function concreteRequest($client, $header, $endpoint)
+    {
+        return new class($client, $header, $endpoint) extends Request {};
     }
 
 }

@@ -6,14 +6,14 @@ use Betalabs\Engine\Permissions\Boot;
 use Betalabs\Engine\Permissions\Permission;
 use Betalabs\Engine\Permissions\Register;
 use Betalabs\Engine\Tests\TestCase;
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\Before;
 
 class RegisterTest extends TestCase
 {
 
-    /**
-     * @after
-     * @before
-     */
+    #[After]
+    #[Before]
     public function clearPermissions()
     {
         Boot::clearPermissions();

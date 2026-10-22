@@ -6,9 +6,8 @@ use Betalabs\Engine\Configs\RouteProvider;
 use Aura\Router\RouterContainer;
 use Betalabs\Engine\Auth\Token;
 use Betalabs\Engine\Requests\EndpointResolver;
-use Carbon\Carbon;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zend\Diactoros\ServerRequest;
 
 class Boot
 {
@@ -47,10 +46,10 @@ class Boot
     /**
      * Start request
      *
-     * @param \Zend\Diactoros\ServerRequest $request
+     * @param \Psr\Http\Message\ServerRequestInterface $request
      * @return mixed
      */
-    public function start(ServerRequest $request)
+    public function start(ServerRequestInterface $request)
     {
 
         $this->mapRoutes();
@@ -82,7 +81,11 @@ class Boot
     /**
      * Search for Engine headers to assign token
      *
-     * @param \Zend\Diactoros\ServerRequest $request
+     * Refresh token and expiration headers are still required to accept the
+     * token, but only the access token is stored (refresh flow was removed
+     * from Auth\Token)
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
      */
     protected function engineHeaders($request)
     {
@@ -95,11 +98,7 @@ class Boot
             return;
         }
 
-        $this->token->informToken(
-            $accessToken,
-            $refreshToken,
-            Carbon::createFromTimestamp($expiresAt)
-        );
+        $this->token->informToken($accessToken);
 
         EndpointResolver::setEndpoint($endpoint);
     }

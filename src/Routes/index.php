@@ -5,7 +5,7 @@ require_once __DIR__ .'/../../vendor/autoload.php';
 /*
  * Initialize container for automatic dependency injection
  */
-$container = \DI\ContainerBuilder::buildDevContainer();
+$container = new \DI\Container();
 
 /*
  * Create an object based on server's data

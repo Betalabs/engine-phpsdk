@@ -8,7 +8,7 @@ class BootResponse
     /** @var bool */
     protected $success;
 
-    /** @var string */
+    /** @var string|null */
     protected $message;
 
     /**

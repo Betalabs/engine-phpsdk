@@ -11,7 +11,7 @@ class Token
 {
     /** @var \Betalabs\Engine\Configs\Auth */
     protected $config;
-    /** @var string */
+    /** @var string|null */
     protected static $accessToken;
 
     /**

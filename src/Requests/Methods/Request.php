@@ -68,7 +68,6 @@ abstract class Request
      * @return array
      * @throws \Betalabs\Engine\Auth\Exceptions\TokenExpiredException
      * @throws \Betalabs\Engine\Auth\Exceptions\UnauthorizedException
-     * @throws \Betalabs\Engine\Configs\Exceptions\ClientNotDefinedException
      * @throws \Betalabs\Engine\Configs\Exceptions\ConfigDoesNotExistException
      * @throws \Betalabs\Engine\Configs\Exceptions\PropertyNotFoundException
      * @throws \DI\DependencyException
@@ -144,7 +143,7 @@ abstract class Request
      * @param string|null $endpointSuffix
      * @return Request
      */
-    public function setEndpointSuffix(string $endpointSuffix = null)
+    public function setEndpointSuffix(?string $endpointSuffix = null)
     {
         $this->endpointSuffix = $endpointSuffix;
         return $this;

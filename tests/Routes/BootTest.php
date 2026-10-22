@@ -12,7 +12,7 @@ use Betalabs\Engine\Configs\RouteProvider as RouteProviderConfig;
 use Betalabs\Engine\Routes\Reserved;
 use Betalabs\Engine\Tests\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequest;
 
 class BootTest extends TestCase
 {
