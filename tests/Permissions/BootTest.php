@@ -9,15 +9,15 @@ use Betalabs\Engine\Permissions\Boot;
 use Betalabs\Engine\Permissions\Permission;
 use Betalabs\Engine\Permissions\Register;
 use Betalabs\Engine\Tests\TestCase;
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\Before;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BootTest extends TestCase
 {
 
-    /**
-     * @after
-     * @before
-     */
+    #[After]
+    #[Before]
     public function clearPermissions()
     {
         Boot::clearPermissions();

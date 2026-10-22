@@ -7,3 +7,4 @@ composer.lock
 /Migration.php
 /Genesis.php
 /.phpunit.cache
+/.phpunit.result.cache

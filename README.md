@@ -1,10 +1,36 @@
 # Engine-PhpSDK
 
-<p align="center">
-<img src="https://app.buddy.works/betalabs/engine-phpsdk/pipelines/pipeline/59764/badge.svg?token=7694a41867a494d5be5dd61a675f7e43fc18c053ab9c6091a392ce111cd03de5" alt="Buddy Status"/>
-</p>
-
 This package is a helper to integrate with Engine. The documentation for integration can be found <a href="https://betalabs.atlassian.net/wiki/spaces/APPS/overview" target="_blank">here</a>.
+
+## Requirements
+
+| | Version |
+|---|---|
+| PHP | 8.2 to 8.5 |
+| Laravel (optional) | not required by the SDK; installs alongside Laravel 8 to 13 |
+
+Projects on PHP below 8.2 must stay on version `2.x` (or older).
+
+## Installation
+
+```
+composer require betalabs/engine-phpsdk
+```
+
+## Upgrading to 3.x
+
+- Requires PHP 8.2+.
+- `laminas/laminas-diactoros` 3 (2.x only supports up to PHP 8.3) and `php-di/php-di` 7.
+- Removed dependencies that were not used by the SDK: `predis/predis`, `phpdocumentor/reflection-docblock`, `phpdocumentor/type-resolver`, `symfony/cache`, `symfony/mime`, `symfony/var-dumper`, `symfony/var-exporter`, `symfony/http-foundation`, `betalabs/guzzle6-adapter` and, since 3.0.1, `nesbot/carbon`. If your project uses any of them directly, require it in your own `composer.json` (Laravel projects already get Carbon from the framework).
+- `guzzlehttp/guzzle` ^7 is now a direct dependency.
+- `Routes\Boot::start()` accepts any PSR-7 `ServerRequestInterface` (since 3.0.1); subclasses overriding `start()` must use the same parameter type.
+- Engine token headers (since 3.0.1): `engine-endpoint`, `engine-access-token`, `engine-refresh-token` and `engine-token-expires-at` must all be present to accept the token, but only the access token is stored (the refresh flow was removed from `Auth\Token` in 2018). An invalid `engine-token-expires-at` value no longer breaks the request.
+
+## CrudMaker (Laravel only)
+
+`Betalabs\Engine\Providers\CrudMakerProvider` registers the `crud-maker:command` Artisan command, which generates migration, model, controller, structure, index handler, action menu, resource and routes for a table. It depends on Laravel (`laravel/framework`), which is not a requirement of the SDK: register the provider manually in a Laravel application to use it.
+
+Each field must be informed as `name,type` (e.g. `name,string`); invalid input is rejected and asked again. Type `sair` to finish.
 
 ## Request
 
@@ -277,3 +303,10 @@ You might want to use a specific token to access Engine API. This can be done th
 - `accessToken` is the access token string to be used in all requests
 
 The `auth` node is not required, however to be used `accessToken` subnode, it must be declared.
+
+## Testing
+
+```
+composer update
+vendor/bin/phpunit
+```

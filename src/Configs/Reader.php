@@ -13,7 +13,7 @@ class Reader
     /** @var string */
     protected $rootPath;
 
-    /** @var \SimpleXMLElement */
+    /** @var \SimpleXMLElement|null */
     protected static $configObject;
 
     /**

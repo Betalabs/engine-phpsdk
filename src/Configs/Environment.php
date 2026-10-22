@@ -48,7 +48,7 @@ class Environment extends AbstractProvider
     /**
      * Catch environment node
      *
-     * @return \SimpleXMLElement[]
+     * @return \SimpleXMLElement
      * @throws \Betalabs\Engine\Configs\Exceptions\EnvironmentNotDefinedException
      */
     protected function environmentNode()

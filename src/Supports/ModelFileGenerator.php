@@ -15,6 +15,7 @@ class ModelFileGenerator
         $filePath = app_path("Models/{$fileName}");
 
 
+        $fieldMigrations = [];
         foreach ($fields as [$name, $type]) {
             $fieldMigrations[] = '"'.$name.'"';
         }

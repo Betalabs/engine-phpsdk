@@ -10,7 +10,7 @@ class Request
     /**
      * Build request based on GLOBALS
      *
-     * @return \Laminas\Diactoros\ServerRequest
+     * @return \Psr\Http\Message\ServerRequestInterface
      */
     public function buildRequest()
     {

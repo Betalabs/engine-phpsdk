@@ -80,12 +80,11 @@ class BootIntegrationTest extends TestCase
     public function testAllEngineHeadersInformTokenAndEndpoint()
     {
 
+        // Exactly one argument: refresh token and expiration are not stored
         $token = \Mockery::mock(Token::class);
         $token->shouldReceive('informToken')
             ->once()
-            ->withArgs(function($accessToken) {
-                return $accessToken === 'token-hash';
-            });
+            ->with('token-hash');
 
         $boot = $this->boot($token);
         $boot->start($this->serverRequest('/hello/engine', 'GET', [
@@ -96,6 +95,39 @@ class BootIntegrationTest extends TestCase
         ]));
 
         $this->assertEquals('http://engine.endpoint', $this->currentEndpoint());
+
+    }
+
+    public function testNonNumericExpirationHeaderDoesNotBreakTheRequest()
+    {
+
+        $token = \Mockery::mock(Token::class);
+        $token->shouldReceive('informToken')
+            ->once()
+            ->with('token-hash');
+
+        $boot = $this->boot($token);
+
+        $this->assertEquals(
+            'hello engine',
+            $boot->start($this->serverRequest('/hello/engine', 'GET', [
+                'engine-endpoint' => 'http://engine.endpoint',
+                'engine-access-token' => 'token-hash',
+                'engine-refresh-token' => 'refresh-hash',
+                'engine-token-expires-at' => 'not-a-timestamp',
+            ]))
+        );
+
+    }
+
+    public function testStartAcceptsAnyPsr7ServerRequest()
+    {
+
+        $boot = $this->boot($this->mockToken(0));
+
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', 'http://app.engine.test/hello/guzzle');
+
+        $this->assertEquals('hello guzzle', $boot->start($request));
 
     }
 

@@ -31,7 +31,12 @@ class CrudMakeController extends Command
     ) : void {
         $this->info('Iniciando comando de criação de arquivos...');
 
-        $tableName = $this->ask('Informe o nome da tabela:');
+        $tableName = trim((string) $this->ask('Informe o nome da tabela:'));
+
+        if ($tableName === '') {
+            $this->error('O nome da tabela é obrigatório');
+            return;
+        }
 
         $fields = [];
 
@@ -49,18 +54,25 @@ class CrudMakeController extends Command
             (ou digite "sair" para terminar):');
 
             // Verifique se o usuário quer sair
-            if (strtolower($input) === 'sair') {
+            if (strtolower((string) $input) === 'sair') {
                 break;
             }
 
-            // Caso contrário, armazene a entrada
-            $fields[] = explode(',', $input);
+            // Caso contrário, armazene a entrada (exatamente "nome,tipo")
+            $field = array_map('trim', explode(',', (string) $input));
+
+            if (count($field) !== 2 || $field[0] === '' || $field[1] === '') {
+                $this->error('Formato inválido, use "nome,tipo" (exemplo: "name,string")');
+                continue;
+            }
+
+            $fields[] = $field;
         }
 
         // Aqui você pode processar os dados
         $this->info('Você inseriu os seguintes dados:');
         foreach ($fields as $data) {
-            $this->line($data);
+            $this->line(implode(', ', $data));
         }
 
         $migrationFileGenerator->generate($tableName, $fields);

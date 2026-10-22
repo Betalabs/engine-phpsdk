@@ -5,7 +5,6 @@
     "require": {
         "php": "^8.2",
         "php-di/php-di": "^7.0",
-        "nesbot/carbon": "^2.26 || ^3.0",
         "aura/router": "^3.1",
         "guzzlehttp/guzzle": "^7.0",
         "laminas/laminas-diactoros": "^3.6",
@@ -13,7 +12,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0",
-        "mockery/mockery": "^1.6.2"
+        "mockery/mockery": "^1.6.2",
+        "laravel/framework": "^12.0"
+    },
+    "suggest": {
+        "laravel/framework": "Required only by the CrudMaker command (crud-maker:command, Betalabs\\Engine\\Providers\\CrudMakerProvider)"
     },
     "autoload": {
         "psr-4": {
